@@ -1,25 +1,12 @@
-/* (C) 1998 Red Hat Software, Inc. -- Licensing details are in the COPYING
+/** \ingroup popt
+ * \file popt/findme.c
+ */
+
+/* (C) 1998-2000 Red Hat, Inc. -- Licensing details are in the COPYING
    file accompanying popt source distributions, available from 
-   ftp://ftp.redhat.com/pub/code/popt */
+   ftp://ftp.rpm.org/pub/rpm/dist. */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#ifdef __NeXT
-/* access macros are not declared in non posix mode in unistd.h -
- don't try to use posix on NeXTstep 3.3 ! */ 
-#include <libc.h>
-#endif
-
-#if HAVE_ALLOCA_H
-# include <alloca.h>
-#endif
-
+#include "system.h"
 #include "findme.h"
 
 const char * findProgramPath(const char * argv0) {
@@ -28,15 +15,14 @@ const char * findProgramPath(const char * argv0) {
     char * start, * chptr;
     char * buf;
 
-    /* If there is a / in the argv[0], it has to be an absolute
-       path */
+    /* If there is a / in the argv[0], it has to be an absolute path */
     if (strchr(argv0, '/'))
-	return strdup(argv0);
+	return xstrdup(argv0);
 
     if (!path) return NULL;
 
     start = pathbuf = alloca(strlen(path) + 1);
-    buf = malloc(strlen(path) + strlen(argv0) + 2);
+    buf = malloc(strlen(path) + strlen(argv0) + sizeof("/"));
     strcpy(pathbuf, path);
 
     chptr = NULL;

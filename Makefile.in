@@ -59,49 +59,84 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+build_alias = @build_alias@
+build_triplet = @build@
 host_alias = @host_alias@
 host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
 AS = @AS@
+CATALOGS = @CATALOGS@
+CATOBJEXT = @CATOBJEXT@
 CC = @CC@
 CPP = @CPP@
+DATADIRNAME = @DATADIRNAME@
 DLLTOOL = @DLLTOOL@
-LD = @LD@
+GENCAT = @GENCAT@
+GMOFILES = @GMOFILES@
+GMSGFMT = @GMSGFMT@
+GT_NO = @GT_NO@
+GT_YES = @GT_YES@
+INCLUDE_LOCALE_H = @INCLUDE_LOCALE_H@
+INSTOBJEXT = @INSTOBJEXT@
+INTLDEPS = @INTLDEPS@
+INTLLIBS = @INTLLIBS@
+INTLOBJS = @INTLOBJS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
-NM = @NM@
+MKINSTALLDIRS = @MKINSTALLDIRS@
+MSGFMT = @MSGFMT@
 OBJDUMP = @OBJDUMP@
 PACKAGE = @PACKAGE@
+POFILES = @POFILES@
+POPT_SOURCE_PATH = @POPT_SOURCE_PATH@
+POSUB = @POSUB@
 RANLIB = @RANLIB@
 TARGET = @TARGET@
 U = @U@
+USE_INCLUDED_LIBINTL = @USE_INCLUDED_LIBINTL@
+USE_NLS = @USE_NLS@
 VERSION = @VERSION@
+l = @l@
 
 AUTOMAKE_OPTIONS = 1.4 foreign
 
-EXTRA_DIST = CHANGES autogen.sh findme.h $(man_MANS) popt.spec poptint.h 	testit.sh po/Makefile.in.in po/POTFILES.in po/*.po po/popt.pot popt.ps
+EXTRA_DIST = autogen.sh CHANGES $(man_MANS) popt.spec 	testit.sh test-poptrc 	po/*.in po/*.po po/popt.pot 	popt.ps
 
 
-SUBDIRS = po
+SUBDIRS = intl po
 
 INCLUDES = -I$(top_srcdir)
 
-noinst_INCLUDES = findme.h poptint.h
+noinst_HEADERS = findme.h poptint.h system.h
 
-noinst_PROGRAMS = test1
+noinst_PROGRAMS = test1 test2
 test1_SOURCES = test1.c
+test1_LDFLAGS = -all-static
 test1_LDADD = $(lib_LTLIBRARIES)
+test2_SOURCES = test2.c
+test2_LDFLAGS = -all-static
+test2_LDADD = $(lib_LTLIBRARIES)
+
+noinst_SCRIPTS = testit.sh
+
+TESTS_ENVIRONMENT =  test1="./test1"
+
+
+TESTS = testit.sh
 
 include_HEADERS = popt.h
 lib_LTLIBRARIES = libpopt.la
 libpopt_la_SOURCES = popt.c findme.c poptparse.c poptconfig.c popthelp.c
+
 man_MANS = popt.3
 
 CVSTAG = $(PACKAGE)-$(subst .,_,$(VERSION))
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = 
+CONFIG_CLEAN_FILES =  Doxyfile
 LTLIBRARIES =  $(lib_LTLIBRARIES)
 
 
@@ -117,7 +152,10 @@ PROGRAMS =  $(noinst_PROGRAMS)
 
 test1_OBJECTS =  test1.o
 test1_DEPENDENCIES =  libpopt.la
-test1_LDFLAGS = 
+test2_OBJECTS =  test2.o
+test2_DEPENDENCIES =  libpopt.la
+SCRIPTS =  $(noinst_SCRIPTS)
+
 CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -127,29 +165,28 @@ man3dir = $(mandir)/man3
 MANS = $(man_MANS)
 
 NROFF = nroff
-HEADERS =  $(include_HEADERS)
+HEADERS =  $(include_HEADERS) $(noinst_HEADERS)
 
-DIST_COMMON =  README ./stamp-h.in COPYING Makefile.am Makefile.in \
-acconfig.h aclocal.m4 config.guess config.h.in config.sub configure \
-configure.in install-sh ltconfig ltmain.sh missing mkinstalldirs
+DIST_COMMON =  README ./stamp-h.in COPYING Doxyfile.in Makefile.am \
+Makefile.in acconfig.h aclocal.m4 config.guess config.h.in config.sub \
+configure configure.in install-sh ltconfig ltmain.sh missing \
+mkinstalldirs
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = gtar
 GZIP_ENV = --best
-DEP_FILES =  .deps/findme.P .deps/popt.P .deps/poptconfig.P \
-.deps/popthelp.P .deps/poptparse.P .deps/test1.P
-SOURCES = $(libpopt_la_SOURCES) $(test1_SOURCES)
-OBJECTS = $(libpopt_la_OBJECTS) $(test1_OBJECTS)
+SOURCES = $(libpopt_la_SOURCES) $(test1_SOURCES) $(test2_SOURCES)
+OBJECTS = $(libpopt_la_OBJECTS) $(test1_OBJECTS) $(test2_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
 .SUFFIXES: .S .c .lo .o .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --foreign Makefile
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps Makefile
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
@@ -188,6 +225,8 @@ distclean-hdr:
 	-rm -f config.h
 
 maintainer-clean-hdr:
+Doxyfile: $(top_builddir)/config.status Doxyfile.in
+	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 mostlyclean-libLTLIBRARIES:
 
@@ -214,6 +253,9 @@ uninstall-libLTLIBRARIES:
 	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
 	done
 
+.c.o:
+	$(COMPILE) -c $<
+
 .s.o:
 	$(COMPILE) -c $<
 
@@ -229,6 +271,9 @@ distclean-compile:
 	-rm -f *.tab.c
 
 maintainer-clean-compile:
+
+.c.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
 
 .s.lo:
 	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
@@ -261,6 +306,10 @@ maintainer-clean-noinstPROGRAMS:
 test1: $(test1_OBJECTS) $(test1_DEPENDENCIES)
 	@rm -f test1
 	$(LINK) $(test1_LDFLAGS) $(test1_OBJECTS) $(test1_LDADD) $(LIBS)
+
+test2: $(test2_OBJECTS) $(test2_DEPENDENCIES)
+	@rm -f test2
+	$(LINK) $(test2_LDFLAGS) $(test2_OBJECTS) $(test2_LDADD) $(LIBS)
 
 install-man3:
 	$(mkinstalldirs) $(DESTDIR)$(man3dir)
@@ -418,7 +467,7 @@ distcheck: dist
 	mkdir $(distdir)/=inst
 	dc_install_base=`cd $(distdir)/=inst && pwd`; \
 	cd $(distdir)/=build \
-	  && ../configure --srcdir=.. --prefix=$$dc_install_base \
+	  && ../configure --with-included-gettext --srcdir=.. --prefix=$$dc_install_base \
 	  && $(MAKE) $(AM_MAKEFLAGS) \
 	  && $(MAKE) $(AM_MAKEFLAGS) dvi \
 	  && $(MAKE) $(AM_MAKEFLAGS) check \
@@ -443,16 +492,11 @@ distdir: $(DISTFILES)
 	-rm -rf $(distdir)
 	mkdir $(distdir)
 	-chmod 777 $(distdir)
-	here=`cd $(top_builddir) && pwd`; \
-	top_distdir=`cd $(distdir) && pwd`; \
-	distdir=`cd $(distdir) && pwd`; \
-	cd $(top_srcdir) \
-	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --foreign Makefile
 	$(mkinstalldirs) $(distdir)/po
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$/$$file $(distdir)/$$file; \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
@@ -469,43 +513,46 @@ distdir: $(DISTFILES)
 	      || exit 1; \
 	  fi; \
 	done
+findme.lo findme.o : findme.c system.h config.h popt.h findme.h
+popt.lo popt.o : popt.c system.h config.h popt.h findme.h poptint.h
+poptconfig.lo poptconfig.o : poptconfig.c system.h config.h popt.h \
+	poptint.h
+popthelp.lo popthelp.o : popthelp.c system.h config.h popt.h poptint.h
+poptparse.lo poptparse.o : poptparse.c system.h config.h popt.h
+test1.o: test1.c system.h config.h popt.h
+test2.o: test2.c system.h config.h popt.h
 
-DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
-
--include $(DEP_FILES)
-
-mostlyclean-depend:
-
-clean-depend:
-
-distclean-depend:
-	-rm -rf .deps
-
-maintainer-clean-depend:
-
-%.o: %.c
-	@echo '$(COMPILE) -c $<'; \
-	$(COMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.c
-	@echo '$(LTCOMPILE) -c $<'; \
-	$(LTCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
+check-TESTS: $(TESTS)
+	@failed=0; all=0; \
+	srcdir=$(srcdir); export srcdir; \
+	for tst in $(TESTS); do \
+	  if test -f $$tst; then dir=.; \
+	  else dir="$(srcdir)"; fi; \
+	  if $(TESTS_ENVIRONMENT) $$dir/$$tst; then \
+	    all=`expr $$all + 1`; \
+	    echo "PASS: $$tst"; \
+	  elif test $$? -ne 77; then \
+	    all=`expr $$all + 1`; \
+	    failed=`expr $$failed + 1`; \
+	    echo "FAIL: $$tst"; \
+	  fi; \
+	done; \
+	if test "$$failed" -eq 0; then \
+	  banner="All $$all tests passed"; \
+	else \
+	  banner="$$failed of $$all tests failed"; \
+	fi; \
+	dashes=`echo "$$banner" | sed s/./=/g`; \
+	echo "$$dashes"; \
+	echo "$$banner"; \
+	echo "$$dashes"; \
+	test "$$failed" -eq 0
 info-am:
 info: info-recursive
 dvi-am:
 dvi: dvi-recursive
 check-am: all-am
+	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
 check: check-recursive
 installcheck-am:
 installcheck: installcheck-recursive
@@ -524,7 +571,8 @@ install: install-recursive
 uninstall-am: uninstall-libLTLIBRARIES uninstall-man \
 		uninstall-includeHEADERS
 uninstall: uninstall-recursive
-all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(MANS) $(HEADERS) config.h
+all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(SCRIPTS) $(MANS) \
+		$(HEADERS) config.h
 all-redirect: all-recursive-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
@@ -546,20 +594,19 @@ maintainer-clean-generic:
 mostlyclean-am:  mostlyclean-hdr mostlyclean-libLTLIBRARIES \
 		mostlyclean-compile mostlyclean-libtool \
 		mostlyclean-noinstPROGRAMS mostlyclean-tags \
-		mostlyclean-depend mostlyclean-generic
+		mostlyclean-generic
 
 mostlyclean: mostlyclean-recursive
 
 clean-am:  clean-hdr clean-libLTLIBRARIES clean-compile clean-libtool \
-		clean-noinstPROGRAMS clean-tags clean-depend \
-		clean-generic mostlyclean-am
+		clean-noinstPROGRAMS clean-tags clean-generic \
+		mostlyclean-am
 
 clean: clean-recursive
 
 distclean-am:  distclean-hdr distclean-libLTLIBRARIES distclean-compile \
 		distclean-libtool distclean-noinstPROGRAMS \
-		distclean-tags distclean-depend distclean-generic \
-		clean-am
+		distclean-tags distclean-generic clean-am
 	-rm -f libtool
 
 distclean: distclean-recursive
@@ -569,8 +616,7 @@ maintainer-clean-am:  maintainer-clean-hdr \
 		maintainer-clean-libLTLIBRARIES \
 		maintainer-clean-compile maintainer-clean-libtool \
 		maintainer-clean-noinstPROGRAMS maintainer-clean-tags \
-		maintainer-clean-depend maintainer-clean-generic \
-		distclean-am
+		maintainer-clean-generic distclean-am
 	@echo "This command is intended for maintainers to use;"
 	@echo "it deletes files that may require special tools to rebuild."
 
@@ -592,15 +638,18 @@ uninstall-exec-recursive installdirs-recursive uninstalldirs-recursive \
 all-recursive check-recursive installcheck-recursive info-recursive \
 dvi-recursive mostlyclean-recursive distclean-recursive clean-recursive \
 maintainer-clean-recursive tags tags-recursive mostlyclean-tags \
-distclean-tags clean-tags maintainer-clean-tags distdir \
-mostlyclean-depend distclean-depend clean-depend \
-maintainer-clean-depend info-am info dvi-am dvi check check-am \
-installcheck-am installcheck all-recursive-am install-exec-am \
-install-exec install-data-am install-data install-am install \
-uninstall-am uninstall all-redirect all-am all installdirs-am \
-installdirs mostlyclean-generic distclean-generic clean-generic \
-maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+distclean-tags clean-tags maintainer-clean-tags distdir check-TESTS \
+info-am info dvi-am dvi check check-am installcheck-am installcheck \
+all-recursive-am install-exec-am install-exec install-data-am \
+install-data install-am install uninstall-am uninstall all-redirect \
+all-am all installdirs-am installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
 
+
+.PHONY: lclint
+lclint:
+	lclint ${DEFS} ${INCLUDES} ${libpopt_la_SOURCES}
 
 .PHONY: archive
 archive: 
@@ -618,6 +667,12 @@ archive:
 	@rm -f /tmp/$(PACKAGE)-$(VERSION).tar.gz 
 	@echo " "
 	@echo "The final archive is ./$(PACKAGE)-$(VERSION).tar.gz."
+
+.PHONY: doxygen
+doxygen: Doxyfile
+	rm -rf doxygen
+	mkdir -p doxygen
+	doxygen
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -1,3 +1,76 @@
+popt (1.6.2-7) unstable; urgency=HIGH
+
+  * Backported fix from 1.6.3 to segfault in poptStrippedArgv.
+    (Closes: #135953)
+  * Please consider for inclusion in woody.
+
+ -- Paul Martin <pm@debian.org>  Wed, 27 Feb 2002 11:31:19 +0000
+
+popt (1.6.2-6) unstable; urgency=HIGH
+
+  * Modified depends in libpopt-dev to depend on
+    libpopt0 (= ${Source-Version}). Previous uploads would allow 
+    libpopt0 to get out of step with libpopt-dev, causing compiles to
+    fail if the user starts from having 1.5-1 installed, and only 
+    upgrades libpopt0. This is a violation of a "should" policy 
+    directive.  (Closes: #125685)
+  * Removed redundant ldconfig call from debian/libpopt0.postinst, as
+    debhelper does it for us. Fixes lintian postinst-unsafe-ldconfig
+    warning.
+  * Uploading with urgency=high, since this upload contains 
+    only minimal, "important" bugfixes.
+
+ -- Paul Martin <pm@debian.org>  Wed, 19 Dec 2001 15:59:03 +0000
+
+popt (1.6.2-5) unstable; urgency=low
+
+  * Add versioned shlibs. This helps out rpm's Bug#95789.
+
+ -- Paul Martin <pm@debian.org>  Mon, 30 Apr 2001 12:31:24 +0100
+
+popt (1.6.2-4) unstable; urgency=low
+
+  * Update config.guess and config.sub to the latest from GNU, to allow
+    configure to run on PARISC architecture. (Closes: #94691)
+
+ -- Paul Martin <pm@debian.org>  Fri, 27 Apr 2001 05:53:17 +0100
+
+popt (1.6.2-3) unstable; urgency=low
+
+  * Add Build-Depends on gettext. (Closes: #95292)
+
+ -- Paul Martin <pm@debian.org>  Thu, 26 Apr 2001 11:26:18 +0100
+
+popt (1.6.2-2) unstable; urgency=low
+
+  * Added versioned conflict to rpm which is statically built, as
+    that also includes all the .po files from popt.
+    (Closes: #95026,#95029)
+  * Changed libpopt0's section from libs to base, so that it agrees with
+    the override on ftp.debian.org.
+
+ -- Paul Martin <pm@debian.org>  Tue, 24 Apr 2001 17:21:26 +0100
+
+popt (1.6.2-1) unstable; urgency=low
+
+  * New maintainer.
+  * Thanks for the NMUs. (Closes: #59324,#62314)
+  * New upstream release. (Closes: #89690,#94691)
+  * Corrected copyright file. (Closes: #61411)
+  * Corrected location of upstream. (Closes: #77653)
+  * Added Build-Depends to comply with current policy.
+  * Ensure all .po files get included in libpopt0.
+  * Updated debian/rules to debhelper 3.
+
+ -- Paul Martin <pm@debian.org>  Mon, 23 Apr 2001 11:57:20 +0100
+
+popt (1.5-0.1) unstable; urgency=low
+
+  * New upstream release. (closes: Bug#59324)
+  * Non maintainer release.
+
+ -- Takuo KITAME <kitame@northeye.org>  Sat, 24 Jun 2000 06:13:12 +0900
+
 popt (1.4-1.1) frozen unstable; urgency=low
 
   * Non-maintainer upload.
