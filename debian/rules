@@ -1,0 +1,59 @@
+#!/usr/bin/make -f
+#
+# Created 5 January 1998 by Enrique Zanardi <ezanardi@ull.es>
+#
+# Copying and modification is unlimited, provided that the modified
+# version is marked as being modified.
+
+PACKAGE=popt
+ARCH = $(shell dpkg --print-gnu-build-architecture)
+ifeq (ARCH,"alpha")
+        LIBCDEV=libc6.1-dev
+else
+        LIBCDEV=libc6-dev
+endif
+
+build:
+	$(checkdir)
+	make 
+	touch build
+
+clean:
+	$(checkdir)
+	make squeaky
+	rm -rf build debian/tmp debian/files debian/substvars
+	touch debian/substvars
+
+binary: binary-indep binary-arch
+
+binary-indep:
+	true
+
+binary-arch: build checkroot
+	$(checkdir)
+	-[ -d debian/tmp ] && rm -rf debian/tmp
+	install -d debian/tmp/DEBIAN debian/tmp/usr/doc/$(PACKAGE)
+	make PREFIX=`pwd`/debian/tmp install
+	install -m 644 debian/changelog \
+	  debian/tmp/usr/doc/$(PACKAGE)/changelog.Debian
+	gzip -9 debian/tmp/usr/doc/$(PACKAGE)/*
+	install -m 644 debian/copyright \
+	  debian/tmp/usr/doc/$(PACKAGE)/
+	dpkg-gencontrol -Pdebian/tmp -p$(PACKAGE) -Vlibcdev=$(LIBCDEV)
+	chmod -R u=rwX,go=rX debian/tmp
+	chown -R root.root debian/tmp
+	chmod 644 debian/tmp/DEBIAN/control
+	dpkg --build debian/tmp ..
+
+define checkdir
+	test -f popt.h
+endef
+
+source diff:
+	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
+
+checkroot:
+	$(checkdir)
+	[ `whoami` = root ]
+
+.PHONY: binary-arch clean source diff checkroot binary binary-indep

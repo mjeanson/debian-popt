@@ -23,7 +23,7 @@ struct poptContext_s {
     char ** leftovers;
     int numLeftovers;
     int nextLeftover;
-    struct poptOption * options;
+    const struct poptOption * options;
     int restLeftover;
     char * appName;
     struct poptAlias * aliases;
@@ -31,7 +31,7 @@ struct poptContext_s {
 };
 
 poptContext poptGetContext(char * name ,int argc, char ** argv, 
-			   struct poptOption * options, int flags) {
+			   const struct poptOption * options, int flags) {
     poptContext con = malloc(sizeof(*con));
 
     con->os = con->optionStack;
@@ -75,7 +75,7 @@ int poptGetNextOpt(poptContext con) {
     char * optString, * chptr, * localOptString;
     char * longArg = NULL;
     char * origOptString;
-    struct poptOption * opt = NULL;
+    const struct poptOption * opt = NULL;
     int done = 0;
     int i;
 

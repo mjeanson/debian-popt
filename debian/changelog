@@ -1,0 +1,23 @@
+popt (1.0-4) unstable; urgency=low
+
+  * Updated Standards-Version.
+
+ -- Enrique Zanardi <ezanardi@molec1.dfis.ull.es>  Thu, 12 Feb 1998 10:06:42 +0000
+
+popt (1.0-3) unstable; urgency=low
+
+  * Defines the dependency on libc*-dev at build-time, fixes: Bug#17208
+
+ -- Enrique Zanardi <ezanardi@molec1.dfis.ull.es>  Sat, 30 Jan 1998 20:10:12 +0000
+
+popt (1.0-2) unstable; urgency=low
+
+  * Added patch by Bruce Perens to use "const" in poptOption structs.
+
+ -- Enrique Zanardi <ezanardi@molec1.dfis.ull.es>  Mon,  7 Jan 1998 12:15:24 +0000
+
+popt (1.0-1) unstable; urgency=low
+
+  * New package.
+
+ -- Enrique Zanardi <ezanardi@molec1.dfis.ull.es>  Mon,  5 Jan 1998 16:36:29 +0000
