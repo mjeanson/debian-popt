@@ -1,3 +1,67 @@
+popt (1.4-1.1) frozen unstable; urgency=low
+
+  * Non-maintainer upload.
+
+  * Move libpopt to /lib since pump (/sbin) uses it. (Closes: Bug#62314)
+  * Add conflicts for libpopt-dev (old versions of -dev point to /usr/lib,
+    which makes ldconfig complain)
+
+ -- Anthony Towns <ajt@debian.org>  Sun, 16 Apr 2000 14:55:29 +1000
+
+popt (1.4-1) unstable; urgency=low
+
+  * New upstream version
+  * New version uses newer libtool (Closes: 52085)
+
+ -- Joseph Carter <knghtbrd@debian.org>  Tue, 14 Dec 1999 05:10:43 -0800
+
+popt (1.3-4) unstable; urgency=low
+
+  * Removed popt.ps from the "upstream" tarball (which I make from the
+    rpm anyway) and the package---it's non-free! (Closes: #41578)
+  * Added README.Debian to tell people about man 3 popt, which Erik
+    Troan says contains everything the postscript doc does
+
+ -- Joseph Carter <knghtbrd@debian.org>  Thu, 29 Jul 1999 05:05:52 -0700
+
+popt (1.3-3) unstable; urgency=low
+
+  * -2 is going to fail dinstall's signature check, here's -3
+
+ -- Joseph Carter <knghtbrd@debian.org>  Sun,  4 Jul 1999 06:11:17 -0700
+
+popt (1.3-2) unstable; urgency=low
+
+  * Whee, split libpopt0 and libpopt-dev packages
+  * Standards-version 3.0.0
+  * Since I had to rewrite the rules file, it now uses debhelper v2
+
+ -- Joseph Carter <knghtbrd@debian.org>  Sun,  4 Jul 1999 06:11:11 -0700
+
+popt (1.3-1) unstable; urgency=low
+
+  * Adopting package from Enrique
+  * 1.3-0.1 provided a proper dynamic library.  Closes: bug#22918
+  * Fixed dependencies
+
+ -- Joseph Carter <knghtbrd@debian.org>  Mon, 24 May 1999 01:31:16 -0700
+
+popt (1.3-0.1) unstable; urgency=low
+
+  * Non-maintainer Upload
+  * New upstream version
+  * Changes required due to the new upstream in excruciatingly exact detail
+    since this is a NMU:
+    - make PREFIX= is now make DESTDIR=
+    - clean target now uses make distclean, not make squeaky
+    - popt.3 manpage gets compressed
+    - /usr/lib/libpopt.la is chmod'd 644 to kill lintian warning
+    - libpopt.so is now --strip-unneeded'd and chmod'd 644
+    - added postinst file and made it call ldconfig on configure
+    - added shlibs file
+
+ -- Joseph Carter <knghtbrd@debian.org>  Thu, 22 Apr 1999 14:22:11 -0700
+
 popt (1.1.1-3) unstable; urgency=low
 
   * Now popt builds properly from clean sources. Fixes: 25581, 26277.

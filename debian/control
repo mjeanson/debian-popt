@@ -1,20 +1,39 @@
 Source: popt
 Section: devel
-Priority: Optional
-Maintainer: Enrique Zanardi <ezanard@debian.org>
-Standards-Version: 2.4.0.0
+Priority: optional
+Maintainer: Joseph Carter <knghtbrd@debian.org>
+Standards-Version: 3.0.1
 
-Package: popt
+Package: libpopt0
 Architecture: any
-Section: devel
-Priority: Optional
-Depends: ${libcdev}
-Description: C library for parsing command line parameters
+Section: libs
+Priority: important
+Depends: ${shlibs:Depends}
+Conflicts: popt, libpopt-dev (<= 1.4-1)
+Replaces: popt
+Description: lib for parsing cmdline parameters
  Popt was heavily influenced by the getopt() and getopt_long() functions,
  but it allows more powerful argument expansion. It can parse arbitrary
  argv[] style arrays and automatically set variables based on command
  line arguments. It also allows command line arguments to be aliased via
  configuration files and includes utility functions for parsing arbitrary
  strings into argv[] arrays using shell-like rules. 
+ .
+ This package contains the runtime library and locale data.
+
+Package: libpopt-dev
+Architecture: any
+Section: devel
+Priority: optional
+Depends: ${libcdev}, libpopt0 (>> 1.4-1)
+Conflicts: popt
+Replaces: popt
+Description: lib for parsing cmdline parameters - development files
+ Popt was heavily influenced by the getopt() and getopt_long() functions,
+ but it allows more powerful argument expansion. It can parse arbitrary
+ argv[] style arrays and automatically set variables based on command
+ line arguments. It also allows command line arguments to be aliased via
+ configuration files and includes utility functions for parsing arbitrary
+ strings into argv[] arrays using shell-like rules.
  .
  This package contains the popt static library and header file.
