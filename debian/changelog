@@ -1,3 +1,74 @@
+popt (1.7-5) unstable; urgency=high
+
+  * The "I hate automake" release.
+  * Make sure configure.in and configure.ac are the same, including
+    timestamp. This allows a compile if you have two different versions of
+    automake installed. (Closes: #245819)
+  * Standards-Version: 3.6.1
+
+ -- Paul Martin <pm@debian.org>  Sun, 29 Aug 2004 16:36:43 +0100
+
+popt (1.7-4) unstable; urgency=low
+
+  * Missed alignment check in poptSaveInt(). (Closes: #217602)
+  * Add shlibdeps check for 1.7-4 if building on m68k, due to 
+    brokenness with older versions of libpopt0 (the alignment checks). 
+    Other archs may be broken, too. Please make yourselves known if so.
+
+ -- Paul Martin <pm@debian.org>  Thu, 20 Nov 2003 19:50:10 +0000
+
+popt (1.7-3) unstable; urgency=low
+
+  * Drop alignment check in poptSaveLong(). (Closes: #217602)
+  * Depend on "libc6-dev | libc-dev". (Closes: #218008)
+  * Updated config.guess and config.sub. (Closes: #218010)
+
+ -- Paul Martin <pm@debian.org>  Tue, 11 Nov 2003 14:44:21 +0000
+
+popt (1.7-2) unstable; urgency=low
+
+  * The "Apart from that, how was the play, Mrs Lincoln?" release.
+  * Acknowledging NMU. (Closes: #195072)
+    It got unstuck because the pattern it was matching for was X.X.X, 
+    and this version is just X.X. Filip's method is much cleaner.
+
+ -- Paul Martin <pm@debian.org>  Thu, 29 May 2003 20:24:32 +0100
+
+popt (1.7-1.1) unstable; urgency=low
+
+  * NMU. Sorry Paul, but this way popt could be fixed before the broken version
+    got installed into the archives.
+  * Use a different way of figuring out the package version. (Closes: #195072)
+    Packages in incoming which got (auto)built against the broken version
+    should be bin-NMUed.
+
+ -- Filip Van Raemdonck <mechanix@debian.org>  Wed, 28 May 2003 19:25:38 +0200
+
+popt (1.7-1) unstable; urgency=low
+
+  * New upstream version. (Closes: #178773, #182248, #193434)
+  * Changed section of libpopt-dev to libdevel.
+  * Added in some .po files I'd missed.
+  * Standards version: 3.5.10
+
+ -- Paul Martin <pm@debian.org>  Tue, 27 May 2003 19:29:25 +0100
+
+popt (1.6.4-2) unstable; urgency=low
+
+  * Last upload broke shlibs. This one fixes it. (Sorry joeyh.)
+  * Use and depend on debhelper v4.
+  * Standards-Version 3.5.6
+
+ -- Paul Martin <pm@debian.org>  Thu, 27 Jun 2002 00:12:41 +0100
+
+popt (1.6.4-1) unstable; urgency=low
+
+  * New upstream release (Closes: #150760)
+    - Updates config.guess and config.sub
+    - Adds a lot of checks for unexpected internal errors.
+
+ -- Paul Martin <pm@debian.org>  Mon, 24 Jun 2002 19:55:47 +0100
+
 popt (1.6.2-7) unstable; urgency=HIGH
 
   * Backported fix from 1.6.3 to segfault in poptStrippedArgv.

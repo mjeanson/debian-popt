@@ -5,8 +5,8 @@ The package was put together by Enrique Zanardi
 <ezanardi@molec1.dfis.ull.es>, from sources obtained from:
   ftp://ftp.redhat.com/pub/redhat/code/popt/popt-1.1.1.tar.gz
 
-Version 1.6.2 from
-  ftp://ftp.rpm.org/pub/rpm/dist/rpm-4.0.x/
+Version 1.7 from
+  ftp://ftp.rpm.org/pub/rpm/dist/rpm-4.1.x/popt-1.7.tar.gz
 
 The copyright on this package is inconsistent, but both licences are
 free. The popt.3 manpage says:

@@ -2,8 +2,8 @@ Source: popt
 Section: devel
 Priority: optional
 Maintainer: Paul Martin <pm@debian.org>
-Build-Depends: debhelper (>> 3.0.0), gettext
-Standards-Version: 3.5.2
+Build-Depends: debhelper (>> 4.0.0), gettext
+Standards-Version: 3.6.1
 
 Package: libpopt0
 Architecture: any
@@ -24,9 +24,9 @@ Description: lib for parsing cmdline parameters
 
 Package: libpopt-dev
 Architecture: any
-Section: devel
+Section: libdevel
 Priority: optional
-Depends: ${libcdev}, libpopt0 (= ${Source-Version})
+Depends: libc6-dev | libc-dev, libpopt0 (= ${Source-Version})
 Conflicts: popt
 Replaces: popt
 Description: lib for parsing cmdline parameters - development files
