@@ -5,8 +5,12 @@
 # Copying and modification is unlimited, provided that the modified
 # version is marked as being modified.
 
-PACKAGE=popt
 ARCH = $(shell dpkg --print-gnu-build-architecture)
+
+PACKAGE=popt
+tmpdir=$(shell pwd)/debian/tmp
+docdir=$(tmpdir)/usr/doc/$(PACKAGE)
+
 ifeq (ARCH,"alpha")
         LIBCDEV=libc6.1-dev
 else
@@ -15,14 +19,14 @@ endif
 
 build:
 	$(checkdir)
+	./configure --prefix=/usr
 	make 
 	touch build
 
 clean:
 	$(checkdir)
-	make squeaky
-	rm -rf build debian/tmp debian/files debian/substvars
-	touch debian/substvars
+	if [ -f Makefile ]; then make squeaky ; fi
+	rm -rf build $(tmpdir) debian/files debian/substvars config.cache
 
 binary: binary-indep binary-arch
 
@@ -31,19 +35,22 @@ binary-indep:
 
 binary-arch: build checkroot
 	$(checkdir)
-	-[ -d debian/tmp ] && rm -rf debian/tmp
-	install -d debian/tmp/DEBIAN debian/tmp/usr/doc/$(PACKAGE)
-	make PREFIX=`pwd`/debian/tmp install
-	install -m 644 debian/changelog \
-	  debian/tmp/usr/doc/$(PACKAGE)/changelog.Debian
-	gzip -9 debian/tmp/usr/doc/$(PACKAGE)/*
-	install -m 644 debian/copyright \
-	  debian/tmp/usr/doc/$(PACKAGE)/
-	dpkg-gencontrol -Pdebian/tmp -p$(PACKAGE) -Vlibcdev=$(LIBCDEV)
-	chmod -R u=rwX,go=rX debian/tmp
-	chown -R root.root debian/tmp
-	chmod 644 debian/tmp/DEBIAN/control
-	dpkg --build debian/tmp ..
+	-[ -d $(tmpdir) ] && rm -rf $(tmpdir)
+
+	make PREFIX=$(tmpdir) install
+	
+	install -d -m 755 $(docdir)
+	install -m 644 debian/changelog $(docdir)/changelog.Debian
+	install -m 644 README popt.ps $(docdir)
+	gzip -9 $(docdir)/*
+	install -m 644 debian/copyright $(docdir)/
+
+	install -d -m 755 $(tmpdir)/DEBIAN
+	dpkg-gencontrol -P$(tmpdir) -p$(PACKAGE) -Vlibcdev=$(LIBCDEV)
+
+	chmod -R go=rX $(tmpdir)
+	chown -R root.root $(tmpdir)
+	dpkg --build $(tmpdir) ..
 
 define checkdir
 	test -f popt.h

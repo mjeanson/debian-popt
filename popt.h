@@ -13,8 +13,12 @@
 #define POPT_ERROR_OPTSTOODEEP	-13
 #define POPT_ERROR_BADQUOTE	-15	/* only from poptParseArgString() */
 #define POPT_ERROR_ERRNO	-16	/* only from poptParseArgString() */
+#define POPT_ERROR_BADNUMBER	-17
+#define POPT_ERROR_OVERFLOW	-18
 
+/* context creation flags */
 #define POPT_BADOPTION_NOALIAS  (1 << 0)  /* don't go into an alias */
+#define POPT_KEEP_FIRST		(1 << 1)  /* pay attention to argv[0] */
 
 struct poptOption {
     const char * longName;	/* may be NULL */

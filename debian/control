@@ -1,7 +1,7 @@
 Source: popt
 Section: devel
 Priority: Optional
-Maintainer: Enrique Zanardi <ezanardi@molec1.dfis.ull.es>
+Maintainer: Enrique Zanardi <ezanard@debian.org>
 Standards-Version: 2.4.0.0
 
 Package: popt
@@ -10,12 +10,11 @@ Section: devel
 Priority: Optional
 Depends: ${libcdev}
 Description: C library for parsing command line parameters
- Popt is a C library for pasing command line parameters. It was heavily
- influenced by the getopt() and getopt_long() functions, but it allows
- more powerfull argument expansion. It can parse arbitrary argv[] style
- arrays and automatically set variables based on command line arguments.
- It also allows command line arguments to be aliased via configuration
- files and includes utility functions for parsing arbitrary strings into
- argv[] arrays using shell-like rules. 
+ Popt was heavily influenced by the getopt() and getopt_long() functions,
+ but it allows more powerful argument expansion. It can parse arbitrary
+ argv[] style arrays and automatically set variables based on command
+ line arguments. It also allows command line arguments to be aliased via
+ configuration files and includes utility functions for parsing arbitrary
+ strings into argv[] arrays using shell-like rules. 
  .
  This package contains the popt static library and header file.
