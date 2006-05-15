@@ -2,8 +2,8 @@ Source: popt
 Section: devel
 Priority: optional
 Maintainer: Paul Martin <pm@debian.org>
-Build-Depends: debhelper (>> 4.0.0), gettext
-Standards-Version: 3.6.1
+Build-Depends: debhelper (>> 5), gettext, quilt
+Standards-Version: 3.7.2
 
 Package: libpopt0
 Architecture: any
@@ -38,3 +38,20 @@ Description: lib for parsing cmdline parameters - development files
  strings into argv[] arrays using shell-like rules.
  .
  This package contains the popt static library and header file.
+
+Package: libpopt0-udeb
+XC-Package-Type: udeb
+Architecture: any
+Section: debian-installer
+Depends: ${shlibs:Depends}
+Description: lib for parsing cmdline parameters
+ Popt was heavily influenced by the getopt() and getopt_long() functions,
+ but it allows more powerful argument expansion. It can parse arbitrary
+ argv[] style arrays and automatically set variables based on command
+ line arguments. It also allows command line arguments to be aliased via
+ configuration files and includes utility functions for parsing arbitrary
+ strings into argv[] arrays using shell-like rules.
+ .
+ This package contains the runtime library and locale data.
+ .
+ This is a minimal package for use in debian-installer.

@@ -1,24 +1,10 @@
 This is the Debian GNU/Linux prepackaged version of the popt library.
-popt was written by Erik Troan <ewt@redhat.com>.
+popt was originally written by Erik Troan when he was with RedHat. It's 
+now maintained as part of Fedora.
 
-The package was put together by Enrique Zanardi
-<ezanardi@molec1.dfis.ull.es>, from sources obtained from:
-  ftp://ftp.redhat.com/pub/redhat/code/popt/popt-1.1.1.tar.gz
+Version 1.10 has been assembled from the contents of:
+  http://download.fedora.redhat.com/pub/fedora/linux/core/4/SRPMS/rpm-4.4.1-21.src.rpm
 
-Version 1.7 from
-  ftp://ftp.rpm.org/pub/rpm/dist/rpm-4.1.x/popt-1.7.tar.gz
-
-The copyright on this package is inconsistent, but both licences are
-free. The popt.3 manpage says:
-
-       It may be redistributed under either the GNU General Public
-       License or the GNU Library General Public License, at the
-       distributor's discretion.
-
-(Both the GPL and LGPL can be found on a Debian system in
-/usr/share/common-licenses/)
-
-However, the COPYING file contains the X licence:
 
 Copyright (c) 1998  Red Hat Software
 

@@ -5,6 +5,8 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+DEB_HOST_GNU_TYPE	:= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+
 # shared library versions, option 1
 source = $(shell grep "^Source: " debian/control|head -1|sed 's/Source: \(.*\)/\1/g')
 
@@ -24,6 +26,7 @@ cflags = -O0 -Wall -g
 else
 cflags = -O2 -Wall -g
 endif
+cflags_udeb = -Os -Wall -g
 
 ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 install = install
@@ -31,35 +34,79 @@ else
 install = install-strip
 endif
 
+objdir = $(CURDIR)/obj-$(DEB_HOST_GNU_TYPE)
+objdir_udeb = $(objdir)-udeb
 
-configure: configure-stamp
-configure-stamp:
+configure: patch configure-deb-stamp configure-udeb-stamp
+configure-deb-stamp:
 	dh_testdir
-	# Fix it so that automake doesn't run
-	cp -a $(CURDIR)/configure.in $(CURDIR)/configure.ac
+	# make build dir
+	mkdir $(objdir)
+	# Make sure we don't try to rebuild the configure script
+	touch configure.ac && \
+	touch aclocal.m4 && \
+	touch configure
+	ln mkinstalldirs $(objdir)
 	# Add here commands to configure the package.
-	./configure --prefix=/usr --mandir=/usr/share/man --enable-shared
-	touch configure-stamp
+	cd $(objdir) && \
+	../configure --prefix=/usr --mandir=/usr/share/man --enable-shared
+	#	--host=$(DEB_HOST_GNU_TYPE)
+	touch $@
 
-build: configure-stamp build-stamp
-build-stamp:
+configure-udeb-stamp:
 	dh_testdir
+	# make build dir
+	mkdir $(objdir_udeb)
+	# Make sure we don't try to rebuild the configure script
+	touch configure.ac && \
+	touch aclocal.m4 && \
+	touch configure
+	ln mkinstalldirs $(objdir_udeb)
+	# Add here commands to configure the package.
+	cd $(objdir_udeb) && \
+	../configure --prefix=/usr --mandir=/usr/share/man --enable-shared
+	#	--host=$(DEB_HOST_GNU_TYPE)
+	touch $@
 
-	$(MAKE) CFLAGS="$(cflags)"
+build: patch build-arch-deb-stamp build-arch-udeb-stamp
 
-	touch build-stamp
+build-arch-deb-stamp: configure-deb-stamp
+	dh_testdir
+	cd $(objdir) && $(MAKE) CFLAGS="$(cflags)"
+	touch $@
 
-clean:
+build-arch-udeb-stamp: configure-udeb-stamp
+	dh_testdir
+	cd $(objdir_udeb) && $(MAKE) CFLAGS="$(cflags_udeb)"
+	touch $@
+
+clean: clean-patched unpatch
+clean-patched:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp config.log
+	rm -f config.log
+	rm -f build-arch-deb-stamp build-arch-udeb-stamp
+	rm -f configure-deb-stamp configure-udeb-stamp
+	rm -f po/*.gmo
+	
+	# Remove build trees
+	rm -rf $(objdir) $(objdir_udeb)
+
+	# Remove install dirs
+	rm -rf $(CURDIR)/debian/tmp $(CURDIR)/debian/tmp-udeb
 
 	# Add here commands to clean up after the build process.
 	-$(MAKE) distclean
 
 	dh_clean
 	rm -rf $(CURDIR)/tmp
-	rm -rf $(CURDIR)/configure.ac
+
+	# Ensure that we have the current config.sub/config.guess
+	-test -r /usr/share/misc/config.sub && \
+		cp -f /usr/share/misc/config.sub config.sub
+	-test -r /usr/share/misc/config.guess && \
+		cp -f /usr/share/misc/config.guess config.guess
 
 install: build
 	dh_testdir
@@ -67,8 +114,18 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp $(install)
+        # Main install
+	cd $(objdir) && \
+		$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
 
+	# udeb install
+	cd $(objdir_udeb) && \
+		$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp-udeb
+
+	# Move the udeb library to /lib
+	mkdir $(CURDIR)/debian/tmp-udeb/lib/
+	mv $(CURDIR)/debian/tmp-udeb/usr/lib/libpopt.so.* \
+		$(CURDIR)/debian/tmp-udeb/lib/
 
 # Build architecture-independent files here.
 binary-indep: build install
@@ -98,7 +155,7 @@ binary-arch: build install
 	dh_strip
 	dh_compress
 	dh_fixperms
-	dh_makeshlibs -V "libpopt0 (>= $(version))"
+	dh_makeshlibs -V "libpopt0 (>= $(version))" -plibpopt0 --add-udeb="libpopt0-udeb"
 	dh_installdeb
 #	dh_perl
 	dh_shlibdeps
@@ -106,5 +163,14 @@ binary-arch: build install
 	dh_md5sums
 	dh_builddeb
 
+patch: patch-stamp
+patch-stamp:
+	QUILT_PATCHES=debian/patches quilt push -a || test $$? = 2
+	touch patch-stamp
+
+unpatch:
+	QUILT_PATCHES=debian/patches quilt pop -a -R || test $$? = 2
+	rm -rf .pc patch-stamp
+
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+.PHONY: build clean binary-indep binary-arch binary install configure patch unpatch clean-patched

@@ -1,4 +1,5 @@
 debian/tmp/usr/lib/libpopt.so.0.0.0			lib
+debian/tmp/usr/share/locale/ca/LC_MESSAGES/popt.mo
 debian/tmp/usr/share/locale/cs/LC_MESSAGES/popt.mo
 debian/tmp/usr/share/locale/da/LC_MESSAGES/popt.mo
 debian/tmp/usr/share/locale/de/LC_MESSAGES/popt.mo
@@ -27,4 +28,4 @@ debian/tmp/usr/share/locale/tr/LC_MESSAGES/popt.mo
 debian/tmp/usr/share/locale/uk/LC_MESSAGES/popt.mo
 debian/tmp/usr/share/locale/wa/LC_MESSAGES/popt.mo
 debian/tmp/usr/share/locale/zh/LC_MESSAGES/popt.mo
-debian/tmp/usr/share/locale/zh_CN.GB2312/LC_MESSAGES/popt.mo
+debian/tmp/usr/share/locale/zh_CN/LC_MESSAGES/popt.mo

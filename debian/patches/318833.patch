@@ -1,0 +1,59 @@
+Index: popt-1.10/popt.c
+===================================================================
+--- popt-1.10.orig/popt.c	2006-05-12 13:49:35.137290871 +0100
++++ popt-1.10/popt.c	2006-05-12 13:49:41.097351283 +0100
+@@ -185,7 +185,8 @@
+     if (!(flags & POPT_CONTEXT_KEEP_FIRST))
+ 	con->os->next = 1;			/* skip argv[0] */
+ 
+-    con->leftovers = calloc( (argc + 1), sizeof(*con->leftovers) );
++    con->allocLeftovers = argc + 1;
++    con->leftovers = calloc( con->allocLeftovers, sizeof(*con->leftovers) );
+     /*@-dependenttrans -assignexpose@*/	/* FIX: W2DO? */
+     con->options = options;
+     /*@=dependenttrans =assignexpose@*/
+@@ -766,7 +767,19 @@
+ 		    return 0;
+ 		}
+ 		if (con->leftovers != NULL)	/* XXX can't happen */
+-		    con->leftovers[con->numLeftovers++] = origOptString;
++		    /* One might think we can never overflow the leftovers
++		       array.  Actually, that's true, as long as you don't
++		       use poptStuffArgs()... */
++		    if ((con->numLeftovers + 1) >= (con->allocLeftovers)) {
++			con->allocLeftovers += 10;
++			con->leftovers =
++			    realloc(con->leftovers,
++				    sizeof(*con->leftovers) * con->allocLeftovers);
++		    }
++		    con->leftovers[con->numLeftovers++]
++			= xstrdup(origOptString); /* so a free of a stuffed
++						     argv doesn't give us a
++						     dangling pointer */
+ 		continue;
+ 	    }
+ 
+@@ -1100,7 +1113,11 @@
+     }
+     con->execs = _free(con->execs);
+ 
++    for (i = 0; i < con->numLeftovers; i++) {
++	con->leftovers[i] = _free(&con->leftovers[i]);
++    }
+     con->leftovers = _free(con->leftovers);
++
+     con->finalArgv = _free(con->finalArgv);
+     con->appName = _free(con->appName);
+     con->otherHelp = _free(con->otherHelp);
+Index: popt-1.10/poptint.h
+===================================================================
+--- popt-1.10.orig/poptint.h	2006-05-12 13:49:29.037252526 +0100
++++ popt-1.10/poptint.h	2006-05-12 13:49:41.099350967 +0100
+@@ -65,6 +65,7 @@
+ /*@owned@*/ /*@null@*/
+     const char ** leftovers;
+     int numLeftovers;
++    int allocLeftovers;
+     int nextLeftover;
+ /*@keep@*/
+     const struct poptOption * options;
