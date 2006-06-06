@@ -1,3 +1,12 @@
+popt (1.10-2) unstable; urgency=low
+
+  * Fix building on 64-bit architectures where the autoconf tools want 
+    to put things in /usr/lib64 instead of /usr/lib. Thanks to Roberto 
+    Pariset for the advice and Simon Huggins for the patch.
+    (Closes: #370414)
+
+ -- Paul Martin <pm@debian.org>  Tue,  6 Jun 2006 18:28:41 +0100
+
 popt (1.10-1) unstable; urgency=low
 
   * New upstream release

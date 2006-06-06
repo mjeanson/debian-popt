@@ -122,9 +122,9 @@ install: build
 	cd $(objdir_udeb) && \
 		$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp-udeb
 
-	# Move the udeb library to /lib
+	# Move the udeb library to /lib or /lib64
 	mkdir $(CURDIR)/debian/tmp-udeb/lib/
-	mv $(CURDIR)/debian/tmp-udeb/usr/lib/libpopt.so.* \
+	mv $(CURDIR)/debian/tmp-udeb/usr/lib*/libpopt.so.* \
 		$(CURDIR)/debian/tmp-udeb/lib/
 
 # Build architecture-independent files here.

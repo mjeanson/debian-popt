@@ -1,4 +1,4 @@
-debian/tmp/usr/lib/libpopt.so.0.0.0			lib
+debian/tmp/usr/lib*/libpopt.so.0.0.0			lib
 debian/tmp/usr/share/locale/ca/LC_MESSAGES/popt.mo
 debian/tmp/usr/share/locale/cs/LC_MESSAGES/popt.mo
 debian/tmp/usr/share/locale/da/LC_MESSAGES/popt.mo
