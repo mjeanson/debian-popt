@@ -1,3 +1,13 @@
+popt (1.10-3) unstable; urgency=low
+
+  * The lib64 problem remains, as an rpath problem. Patch 374797.patch 
+    changes Makefile.in so that ./configure doesn't put the libraries in 
+    the wrong place or give them the wrong rpath. (Closes: #374797)
+    PS. This fix is fragile to any of the autoconf files (eg. 
+    configure.ac or Makefile.ac) being touched or modified.
+
+ -- Paul Martin <pm@debian.org>  Tue,  8 Aug 2006 01:41:49 +0100
+
 popt (1.10-2) unstable; urgency=low
 
   * Fix building on 64-bit architectures where the autoconf tools want 
