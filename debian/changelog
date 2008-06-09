@@ -1,3 +1,30 @@
+popt (1.14-1) unstable; urgency=low
+
+  * New upstream version.
+    + See CHANGES file for details.
+    + debian/patches/374797.patch no longer needed
+    + Upstream now has po/de.po, po/zh_CN.po
+  * Move existing bug fixes into quilt:
+    + debian/patches/217602.patch: Drop alignment check in 
+      poptSaveLong() and poptSaveInt()
+    + debian/patches/356669.patch: po/ca.po (Catalan).
+  * Fix debian/patches/ to allow future source format 3.0 (quilt).
+    (Closes: #484951)
+  * Fix lintian errors:
+    + substvar-source-version-is-deprecated, changed to ${binary:Version}
+    + debian-rules-ignores-make-clean-error
+  * Updates to CFLAGS in debian/rules to ensure correct build.
+  * Update to standards-version 3.8.0 and debhelper 7, and move to 
+    section libs.
+  * Note: config.sub and config.guess are whatever upstream supplies. 
+    The previous use of the latest locally installed versions was a 
+    kluge to avoid build problems on new architectures. This is not 
+    compatible with future source packaging formats, and if not carefully 
+    handled causes build problems when autotools is not installed.
+  * Accommodate cross-compilation. (Closes: #282913)
+
+ -- Paul Martin <pm@debian.org>  Mon, 09 Jun 2008 21:42:27 +0100
+
 popt (1.10-3) unstable; urgency=low
 
   * The lib64 problem remains, as an rpath problem. Patch 374797.patch 

@@ -2,8 +2,7 @@ This is the Debian GNU/Linux prepackaged version of the popt library.
 popt was originally written by Erik Troan when he was with RedHat. It's 
 now maintained as part of Fedora.
 
-Version 1.10 has been assembled from the contents of:
-  http://download.fedora.redhat.com/pub/fedora/linux/core/4/SRPMS/rpm-4.4.1-21.src.rpm
+Version 1.14 has been obtained from http://rpm5.org/files/popt/
 
 
 Copyright (c) 1998  Red Hat Software

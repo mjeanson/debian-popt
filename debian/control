@@ -2,15 +2,16 @@ Source: popt
 Section: devel
 Priority: optional
 Maintainer: Paul Martin <pm@debian.org>
-Build-Depends: debhelper (>> 5), gettext, quilt
-Standards-Version: 3.7.2
+Build-Depends: debhelper (>> 7), gettext, quilt
+Homepage: http://rpm5.org/
+Standards-Version: 3.8.0
 
 Package: libpopt0
 Architecture: any
-Section: base
+Section: libs
 Priority: important
 Depends: ${shlibs:Depends}
-Conflicts: popt, libpopt-dev (<= 1.4-1), rpm (<= 4.0.2-3)
+Conflicts: popt, libpopt-dev (<= 1.14-1), rpm (<= 4.0.2-3)
 Replaces: popt
 Description: lib for parsing cmdline parameters
  Popt was heavily influenced by the getopt() and getopt_long() functions,
@@ -26,7 +27,7 @@ Package: libpopt-dev
 Architecture: any
 Section: libdevel
 Priority: optional
-Depends: libc6-dev | libc-dev, libpopt0 (= ${Source-Version})
+Depends: libc6-dev | libc-dev, libpopt0 (= ${binary:Version})
 Conflicts: popt
 Replaces: popt
 Description: lib for parsing cmdline parameters - development files

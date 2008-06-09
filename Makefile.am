@@ -4,16 +4,17 @@ AUTOMAKE_OPTIONS = 1.4 foreign
 
 LINT = splint
 
-EXTRA_DIST = autogen.sh CHANGES $(man_MANS) popt.spec \
+EXTRA_DIST = config.rpath autogen.sh CHANGES $(man_MANS) popt.spec \
+	footer_no_timestamp.html libpopt.vers \
 	testit.sh test-poptrc test3-data/0* \
 	po/*.in po/*.po po/popt.pot \
 	popt.ps
 
-SUBDIRS = intl po
+SUBDIRS = po
 
 INCLUDES = -I. -I$(top_srcdir)
 
-noinst_HEADERS = findme.h poptint.h system.h
+noinst_HEADERS = poptint.h system.h
 
 noinst_PROGRAMS = test1 test2 test3
 test1_SOURCES = test1.c
@@ -35,15 +36,23 @@ TESTS = testit.sh
 
 include_HEADERS = popt.h
 
-usrlibdir = $(libdir)@MARK64@
+usrlibdir = $(libdir)
 usrlib_LTLIBRARIES = libpopt.la
 
-libpopt_la_SOURCES = popt.c findme.c poptparse.c poptconfig.c popthelp.c
-libpopt_la_LDFLAGS = @INTLLIBS@
+libpopt_la_SOURCES = popt.c poptparse.c poptconfig.c popthelp.c poptint.c
+libpopt_la_LDFLAGS = -no-undefined @LTLIBINTL@ @LTLIBICONV@
+
+if HAVE_LD_VERSION_SCRIPT
+libpopt_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libpopt.vers
+endif
 
 man_MANS = popt.3
 
 #BUILT_SOURCES = popt.lcd
+
+.PHONY:	updatepo
+updatepo:
+	rsync -Lrtvz  translationproject.org::tp/latest/popt/  po
 
 popt.lcd: Makefile.am ${libpopt_la_SOURCES} ${include_HEADERS} ${noinst_HEADERS}
 	lclint -dump $@ ${libpopt_la_SOURCES}
@@ -56,27 +65,10 @@ sources:
 lint:
 	$(LINT) ${DEFS} ${INCLUDES} test1.c ${libpopt_la_SOURCES}
 
-CVSTAG = $(PACKAGE)-$(subst .,_,$(VERSION))
-
-.PHONY: archive
-archive: 
-	@echo "This is $(PACKAGE)-$(VERSION)."
-	@sleep 5
-	@cvs -Q tag -F $(CVSTAG) .
-	@rm -rf /tmp/$(PACKAGE)-$(VERSION) /tmp/$(PACKAGE)
-	@cd /tmp; cvs -Q -d $(CVSROOT) export -r$(CVSTAG) $(PACKAGE) || :
-	@mv /tmp/$(PACKAGE) /tmp/$(PACKAGE)-$(VERSION)
-	@cd /tmp/$(PACKAGE)-$(VERSION); ./autogen.sh ; make depend; make distclean
-	@cd /tmp/$(PACKAGE)-$(VERSION); ./autogen.sh --noconfigure
-	@cd /tmp; tar czSpf $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)
-	@rm -rf /tmp/$(PACKAGE)-$(VERSION)
-	@cp /tmp/$(PACKAGE)-$(VERSION).tar.gz .
-	@rm -f /tmp/$(PACKAGE)-$(VERSION).tar.gz 
-	@echo " "
-	@echo "The final archive is ./$(PACKAGE)-$(VERSION).tar.gz."
-
 .PHONY: doxygen
 doxygen: Doxyfile
 	rm -rf doxygen
 	mkdir -p doxygen
 	doxygen
+
+ACLOCAL_AMFLAGS = -I m4

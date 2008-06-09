@@ -1,118 +1,132 @@
-# German translation of popt.
-# Copyright (C) 2006 Free Software Foundation, Inc.
-# Holger Wansing <linux@wansing-online.de>, 2006.
-# 
-# 
+# Translation of popt to German (Deutsch)
+# This file is distributed under the same license as the popt package.
+# Robert Scheck <robert@rpm5.org>, 2004-2008.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: popt 1.7-5\n"
-"Report-Msgid-Bugs-To: popt@packages.debian.org\n"
-"POT-Creation-Date: 2002-09-16 13:31-0400\n"
-"PO-Revision-Date: 2006-01-29 13:53+0100\n"
-"Last-Translator: Holger Wansing <linux@wansing-online.de>\n"
-"Language-Team: German <debian-l10n-german@lists.debian.org>\n"
+"Project-Id-Version: popt 1.14\n"
+"Report-Msgid-Bugs-To: <popt-devel@rpm5.org>\n"
+"POT-Creation-Date: 2008-04-02 13:18-0400\n"
+"PO-Revision-Date: 2008-03-12 22:21+0100\n"
+"Last-Translator: Robert Scheck <robert@rpm5.org>\n"
+"Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
-#: popt.c:34
+#: popt.c:42
 msgid "unknown errno"
-msgstr "unbekannte Fehlernummer in errno"
+msgstr "Unbekannte Fehler-Nummer"
 
-#: popt.c:940
+#: popt.c:1141
 #, c-format
-msgid "option type (%d) not implemented in popt\n"
-msgstr "Optionstyp (%d) in popt nicht implementiert\n"
+msgid "option type (%u) not implemented in popt\n"
+msgstr "Optionstyp (%u) ist nicht in popt implementiert\n"
 
-#: popt.c:1160
+#: popt.c:1349
 msgid "missing argument"
 msgstr "Fehlendes Argument"
 
-#: popt.c:1162
+#: popt.c:1351
 msgid "unknown option"
-msgstr "unbekannte Option"
+msgstr "Unbekannte Option"
 
-#: popt.c:1164
+#: popt.c:1353
 msgid "mutually exclusive logical operations requested"
-msgstr "sich gegenseitig ausschließende logische Operationen angefordert"
+msgstr "Gegenseitig ausschließende logische Operatoren"
 
-#: popt.c:1166
+#: popt.c:1355
 msgid "opt->arg should not be NULL"
-msgstr "opt->arg (Wert der Variablen »arg«) darf nicht NULL sein"
+msgstr "opt->arg sollte nicht NULL sein"
 
-#: popt.c:1168
+#: popt.c:1357
 msgid "aliases nested too deeply"
-msgstr "Aliasnamen zu tief verschachtelt"
+msgstr "Aliase zu tief verschachtelt"
 
-#: popt.c:1170
+#: popt.c:1359
 msgid "error in parameter quoting"
-msgstr "Fehler beim Quotieren von Parameter(n)"
+msgstr "Fehler beim Quotieren der Parameter"
 
-#: popt.c:1172
+#: popt.c:1361
 msgid "invalid numeric value"
-msgstr "ungültiger numerischer Wert"
+msgstr "Ungültiger nummerischer Wert"
 
-#: popt.c:1174
+#: popt.c:1363
 msgid "number too large or too small"
 msgstr "Nummer zu groß oder zu klein"
 
-#: popt.c:1176
+#: popt.c:1365
 msgid "memory allocation failed"
-msgstr "Speicheranforderung fehlgeschlagen"
+msgstr "Speicherzuordnung fehlgeschlagen"
 
-#: popt.c:1180
+#: popt.c:1369
 msgid "unknown error"
-msgstr "unbekannter Fehler"
+msgstr "Unbekannter Fehler"
 
-#: popthelp.c:57
+#: popthelp.c:75 popthelp.c:86
 msgid "Show this help message"
-msgstr "Diese Hilfe anzeigen"
+msgstr "Zeigt diese Hilfe an"
 
-#: popthelp.c:58
+#: popthelp.c:76 popthelp.c:87
 msgid "Display brief usage message"
-msgstr "Kurzen Hinweis zur Nutzung anzeigen"
+msgstr "Zeigt eine kurze Verwendungsinformation"
 
-#: popthelp.c:61
+#: popthelp.c:90
 msgid "Display option defaults in message"
-msgstr "Standardwerte für Optionen in Meldung anzeigen"
+msgstr "Zeigt die Standardeinstellungen an"
 
-#: popthelp.c:103
+#: popthelp.c:92
+msgid "Terminate options"
+msgstr "Schließt die Optionen ab"
+
+#: popthelp.c:191
+msgid "Help options:"
+msgstr "Hilfe-Optionen:"
+
+#: popthelp.c:192
+msgid "Options implemented via popt alias/exec:"
+msgstr "Optionen über popt alias/exec implementiert:"
+
+#: popthelp.c:200
 msgid "NONE"
 msgstr "NICHTS"
 
-#: popthelp.c:105
+#: popthelp.c:202
 msgid "VAL"
-msgstr "VAL"
+msgstr "WERT"
 
-#: popthelp.c:109
+#: popthelp.c:206
 msgid "INT"
-msgstr "INT"
+msgstr "INTEGER"
 
-#: popthelp.c:110
+#: popthelp.c:207
 msgid "LONG"
 msgstr "LONG"
 
-#: popthelp.c:111
+#: popthelp.c:208
+msgid "LONGLONG"
+msgstr "LONGLONG"
+
+#: popthelp.c:209
 msgid "STRING"
 msgstr "STRING"
 
-#: popthelp.c:112
+#: popthelp.c:210
 msgid "FLOAT"
 msgstr "FLOAT"
 
-#: popthelp.c:113
+#: popthelp.c:211
 msgid "DOUBLE"
 msgstr "DOUBLE"
 
-#: popthelp.c:114
+#: popthelp.c:214
 msgid "ARG"
-msgstr "ARG"
+msgstr "ARGUMENT"
 
-#: popthelp.c:486
+#: popthelp.c:633
 msgid "Usage:"
-msgstr "Aufruf:"
+msgstr "Verwendung:"
 
-#: popthelp.c:510
+#: popthelp.c:657
 msgid "[OPTION...]"
-msgstr "[Option ...]"
-
+msgstr "[OPTION...]"

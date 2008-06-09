@@ -6,8 +6,8 @@
 
 /*@unchecked@*/
 static int pass2 = 0;
-static void option_callback(/*@unused@*/ poptContext con,
-		/*@unused@*/ enum poptCallbackReason reason,
+static void option_callback(/*@unused@*/ UNUSED(poptContext con),
+		/*@unused@*/ UNUSED(enum poptCallbackReason reason),
 		const struct poptOption * opt,
 		char * arg, void * data)
 	/*@globals fileSystem @*/
@@ -46,6 +46,10 @@ static long aLong = 738905609L;
 /*@unchecked@*/
 static long bLong = 738905609L;
 /*@unchecked@*/
+static long long aLongLong = 738905609LL;
+/*@unchecked@*/
+static long long bLongLong = 738905609LL;
+/*@unchecked@*/
 static float aFloat = 3.1415926535;
 /*@unchecked@*/
 static float bFloat = 3.1415926535;
@@ -53,6 +57,9 @@ static float bFloat = 3.1415926535;
 static double aDouble = 9.86960440108935861883;
 /*@unchecked@*/
 static double bDouble = 9.86960440108935861883;
+/*@unchecked@*/ /*@only@*/ /*@null@*/
+static const char ** aArgv = NULL;
+
 /*@unchecked@*/ /*@null@*/
 static char * oStr = (char *) -1;
 /*@unchecked@*/
@@ -73,7 +80,7 @@ static struct poptOption moreCallbackArgs[] = {
   { NULL, '\0', POPT_ARG_CALLBACK|POPT_CBFLAG_INC_DATA,
 	(void *)option_callback, 0,
 	NULL, NULL },
-  { "cb2", 'c', POPT_ARG_STRING, NULL, 'c',
+  { "cb2", 'c', POPT_ARG_STRING, NULL, (int)'c',
 	"Test argument callbacks", NULL },
   POPT_TABLEEND
 };
@@ -82,9 +89,9 @@ static struct poptOption moreCallbackArgs[] = {
 static struct poptOption callbackArgs[] = {
   { NULL, '\0', POPT_ARG_CALLBACK, (void *)option_callback, 0,
 	"sampledata", NULL },
-  { "cb", 'c', POPT_ARG_STRING, NULL, 'c',
+  { "cb", 'c', POPT_ARG_STRING, NULL, (int)'c',
 	"Test argument callbacks", NULL },
-  { "longopt", '\0', 0, NULL, 'l',
+  { "longopt", '\0', 0, NULL, (int)'l',
 	"Unused option for help testing", NULL },
   POPT_TABLEEND
 };
@@ -121,10 +128,22 @@ static struct poptOption options[] = {
 	"POPT_ARG_INT: 271828", NULL },
   { "long", 'l', POPT_ARG_LONG | POPT_ARGFLAG_SHOW_DEFAULT, &aLong, 0,
 	"POPT_ARG_LONG: 738905609", NULL },
+  { "longlong", 'L', POPT_ARG_LONGLONG | POPT_ARGFLAG_SHOW_DEFAULT, &aLongLong, 0,
+	"POPT_ARG_LONGLONG: 738905609", NULL },
   { "float", 'f', POPT_ARG_FLOAT | POPT_ARGFLAG_SHOW_DEFAULT, &aFloat, 0,
 	"POPT_ARG_FLOAT: 3.14159", NULL },
   { "double", 'd', POPT_ARG_DOUBLE | POPT_ARGFLAG_SHOW_DEFAULT, &aDouble, 0,
 	"POPT_ARG_DOUBLE: 9.8696", NULL },
+
+   { "randint", '\0', POPT_ARG_INT|POPT_ARGFLAG_RANDOM, &aInt, 0,
+	"POPT_ARGFLAG_RANDOM: experimental", NULL },
+   { "randlong", '\0', POPT_ARG_LONG|POPT_ARGFLAG_RANDOM, &aLong, 0,
+	"POPT_ARGFLAG_RANDOM: experimental", NULL },
+   { "randlonglong", '\0', POPT_ARG_LONGLONG|POPT_ARGFLAG_RANDOM, &aLongLong, 0,
+	"POPT_ARGFLAG_RANDOM: experimental", NULL },
+
+   { "argv", '\0', POPT_ARG_ARGV, &aArgv, 0,
+	"POPT_ARG_ARGV: append arg to array (can be used multiple times)",NULL},
 
   { "bitset", '\0', POPT_BIT_SET | POPT_ARGFLAG_SHOW_DEFAULT, &aFlag, 0x4321,
 	"POPT_BIT_SET: |= 0x4321", 0},
@@ -148,10 +167,10 @@ static struct poptOption options[] = {
 
 static void resetVars(void)
 	/*@globals arg1, arg2, arg3, inc, shortopt,
-		aVal, aFlag, aInt, aLong, aFloat, aDouble,
+		aVal, aFlag, aInt, aLong, aLongLong, aFloat, aDouble, aArgv,
 		oStr, singleDash, pass2 @*/
 	/*@modifies arg1, arg2, arg3, inc, shortopt,
-		aVal, aFlag, aInt, aLong, aFloat, aDouble,
+		aVal, aFlag, aInt, aLong, aLongLong, aFloat, aDouble, aArgv,
 		oStr, singleDash, pass2 @*/
 {
     arg1 = 0;
@@ -165,8 +184,21 @@ static void resetVars(void)
 
     aInt = bInt;
     aLong = bLong;
+    aLongLong = bLongLong;
     aFloat = bFloat;
     aDouble = bDouble;
+
+    if (aArgv) {
+	int i;
+	for (i = 0; aArgv[i] != NULL; i++) {
+/*@-unqualifiedtrans@*/
+	    free((void *)aArgv[i]);
+/*@=unqualifiedtrans@*/
+	    aArgv[i] = NULL;
+	}
+	free(aArgv);
+	aArgv = NULL;
+    }
 
     oStr = (char *) -1;
 
@@ -185,7 +217,7 @@ int main(int argc, const char ** argv)
     int help = 0;
     int usage = 0;
 
-#if HAVE_MCHECK_H && HAVE_MTRACE
+#if defined(HAVE_MCHECK_H) && defined(HAVE_MTRACE)
     /*@-moduncon -noeffectuncon@*/
     mtrace();   /* Trace malloc only if MALLOC_TRACE=mtrace-output-file. */
     /*@=moduncon =noeffectuncon@*/
@@ -243,18 +275,26 @@ int main(int argc, const char ** argv)
 	fprintf(stdout, " aInt: %d", aInt);
     if (aLong != bLong)
 	fprintf(stdout, " aLong: %ld", aLong);
+    if (aLongLong != bLongLong)
+	fprintf(stdout, " aLongLong: %lld", aLongLong);
 /*@-realcompare@*/
     if (aFloat != bFloat)
-	fprintf(stdout, " aFloat: %g", aFloat);
+	fprintf(stdout, " aFloat: %g", (double)aFloat);
     if (aDouble != bDouble)
 	fprintf(stdout, " aDouble: %g", aDouble);
 /*@=realcompare@*/
+    if (aArgv != NULL) {
+	const char **av = aArgv;
+	const char * arg;
+	fprintf(stdout, " aArgv:");
+	while ((arg = *av++) != NULL)
+	    fprintf(stdout, " %s", arg);
+    }
     if (oStr != (char *)-1)
 	fprintf(stdout, " oStr: %s", (oStr ? oStr : "(none)"));
     if (singleDash)
 	fprintf(stdout, " -");
 
-/*@-boundsread@*/
     rest = poptGetArgs(optCon);
     if (rest) {
 	fprintf(stdout, " rest:");
@@ -263,13 +303,12 @@ int main(int argc, const char ** argv)
 	    rest++;
 	}
     }
-/*@=boundsread@*/
 
     fprintf(stdout, "\n");
 
 exit:
     optCon = poptFreeContext(optCon);
-#if HAVE_MCHECK_H && HAVE_MTRACE
+#if defined(HAVE_MCHECK_H) && defined(HAVE_MTRACE)
     /*@-moduncon -noeffectuncon@*/
     muntrace();   /* Trace malloc only if MALLOC_TRACE=mtrace-output-file. */
     /*@=moduncon =noeffectuncon@*/

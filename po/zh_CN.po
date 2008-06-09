@@ -1,113 +1,135 @@
+# translation of translation.po to 
+# Simplified Chinese Messages for popt
+# Copyright (C) 2005, 2007 Free Software Foundation, Inc.
+# Wei-Lun Chao <chaoweilun@pcmail.com.tw>, 2005.
+# LI Daobing <lidaobing@gmail.com>, 2007, 2008.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: popt 1.6.3\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-29 07:48-0500\n"
-"PO-Revision-Date: 1999-11-11 05:04+0800\n"
-"Last-Translator: Dillion Chen <dillon.chen@turbolinux.com.cn>\n"
-"Language-Team: TLDN\n"
+"Project-Id-Version: popt 1.14\n"
+"Report-Msgid-Bugs-To: <popt-devel@rpm5.org>\n"
+"POT-Creation-Date: 2008-04-02 13:18-0400\n"
+"PO-Revision-Date: 2008-02-18 20:16+0800\n"
+"Last-Translator: LI Daobing <lidaobing@gmail.com>\n"
+"Language-Team: Chinese (simplified) <translation-team-zh-cn@lists."
+"sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=gb2312\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: popt.c:35
+#: popt.c:42
 msgid "unknown errno"
-msgstr ""
+msgstr "未知的错误"
 
-#: popt.c:964
+#: popt.c:1141
 #, c-format
-msgid "option type (%d) not implemented in popt\n"
-msgstr ""
+msgid "option type (%u) not implemented in popt\n"
+msgstr "选项类别 (%u) 没有在 popt 中实现\n"
 
-#: popt.c:1184
+#: popt.c:1349
 msgid "missing argument"
-msgstr ""
+msgstr "缺少参数"
 
-#: popt.c:1186
+#: popt.c:1351
 msgid "unknown option"
-msgstr ""
+msgstr "未知的选项"
 
-#: popt.c:1188
+#: popt.c:1353
 msgid "mutually exclusive logical operations requested"
-msgstr ""
+msgstr "需要 XOR 逻辑运算"
 
-#: popt.c:1190
+#: popt.c:1355
 msgid "opt->arg should not be NULL"
-msgstr ""
+msgstr "opt->arg 不应该为 NULL"
 
-#: popt.c:1192
+#: popt.c:1357
 msgid "aliases nested too deeply"
-msgstr ""
+msgstr "别名嵌套太深"
 
-#: popt.c:1194
+#: popt.c:1359
 msgid "error in parameter quoting"
-msgstr ""
+msgstr "参数引号错误"
 
-#: popt.c:1196
+#: popt.c:1361
 msgid "invalid numeric value"
-msgstr ""
+msgstr "无效的数值"
 
-#: popt.c:1198
+#: popt.c:1363
 msgid "number too large or too small"
-msgstr ""
+msgstr "数值太大或太小"
 
-#: popt.c:1200
+#: popt.c:1365
 msgid "memory allocation failed"
-msgstr ""
+msgstr "内存分配错误"
 
-#: popt.c:1204
+#: popt.c:1369
 msgid "unknown error"
-msgstr ""
+msgstr "未知的错误"
 
-#: popthelp.c:64 popthelp.c:75
+#: popthelp.c:75 popthelp.c:86
 msgid "Show this help message"
-msgstr "��ʾ����������Ϣ"
+msgstr "显示这个帮助信息"
 
-#: popthelp.c:65 popthelp.c:76
+#: popthelp.c:76 popthelp.c:87
 msgid "Display brief usage message"
-msgstr "��ʾ���ʹ����Ϣ"
+msgstr "显示简短的使用说明"
 
-#: popthelp.c:79
-#, fuzzy
+#: popthelp.c:90
 msgid "Display option defaults in message"
-msgstr "��ʾ���ʹ����Ϣ"
+msgstr "在信息中显示默认的选项"
 
-#: popthelp.c:124
+#: popthelp.c:92
+msgid "Terminate options"
+msgstr "终止选项"
+
+#: popthelp.c:191
+msgid "Help options:"
+msgstr "帮助选项:"
+
+#: popthelp.c:192
+msgid "Options implemented via popt alias/exec:"
+msgstr "通过 popt alias/exec 实现的选项:"
+
+#: popthelp.c:200
 msgid "NONE"
-msgstr ""
+msgstr "NONE"
 
-#: popthelp.c:126
+#: popthelp.c:202
 msgid "VAL"
-msgstr ""
+msgstr "VAL"
 
-#: popthelp.c:130
+#: popthelp.c:206
 msgid "INT"
-msgstr ""
+msgstr "INT"
 
-#: popthelp.c:131
+#: popthelp.c:207
 msgid "LONG"
-msgstr ""
+msgstr "LONG"
 
-#: popthelp.c:132
+#: popthelp.c:208
+msgid "LONGLONG"
+msgstr "LONGLONG"
+
+#: popthelp.c:209
 msgid "STRING"
-msgstr ""
+msgstr "STRING"
 
-#: popthelp.c:133
+#: popthelp.c:210
 msgid "FLOAT"
-msgstr ""
+msgstr "FLOAT"
 
-#: popthelp.c:134
+#: popthelp.c:211
 msgid "DOUBLE"
-msgstr ""
+msgstr "DOUBLE"
 
-#: popthelp.c:135
+#: popthelp.c:214
 msgid "ARG"
-msgstr ""
+msgstr "ARG"
 
-#: popthelp.c:548
+#: popthelp.c:633
 msgid "Usage:"
-msgstr ""
+msgstr "用法:"
 
-#: popthelp.c:572
+#: popthelp.c:657
 msgid "[OPTION...]"
-msgstr ""
+msgstr "[选项...]"

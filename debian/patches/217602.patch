@@ -1,0 +1,32 @@
+Index: popt-1.14/popt.c
+===================================================================
+--- popt-1.14.orig/popt.c	2008-06-09 17:14:20.073282105 +0100
++++ popt-1.14/popt.c	2008-06-09 17:15:20.765279008 +0100
+@@ -771,8 +771,13 @@
+ 
+ int poptSaveLong(long * arg, unsigned int argInfo, long aLong)
+ {
++#if 0
+     /* XXX Check alignment, may fail on funky platforms. */
+     if (arg == NULL || (((unsigned long)arg) & (sizeof(*arg)-1)))
++#else
++    /* It does! pm@debian.org */
++    if (arg == NULL)
++#endif
+ 	return POPT_ERROR_NULLARG;
+ 
+     if (aLong != 0 && LF_ISSET(RANDOM)) {
+@@ -807,8 +812,13 @@
+ 
+ int poptSaveInt(/*@null@*/ int * arg, unsigned int argInfo, long aLong)
+ {
++#if 0
+     /* XXX Check alignment, may fail on funky platforms. */
+     if (arg == NULL || (((unsigned long)arg) & (sizeof(*arg)-1)))
++#else
++    /* It does! pm@debian.org */
++    if (arg == NULL)
++#endif
+ 	return POPT_ERROR_NULLARG;
+ 
+     if (aLong != 0 && LF_ISSET(RANDOM)) {
