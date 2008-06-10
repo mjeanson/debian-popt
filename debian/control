@@ -11,7 +11,7 @@ Architecture: any
 Section: libs
 Priority: important
 Depends: ${shlibs:Depends}
-Conflicts: popt, libpopt-dev (<= 1.14-1), rpm (<= 4.0.2-3)
+Conflicts: popt, libpopt-dev (<= 1.4-1), rpm (<= 4.0.2-3)
 Replaces: popt
 Description: lib for parsing cmdline parameters
  Popt was heavily influenced by the getopt() and getopt_long() functions,
