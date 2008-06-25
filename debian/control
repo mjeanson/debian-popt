@@ -53,6 +53,6 @@ Description: lib for parsing cmdline parameters
  configuration files and includes utility functions for parsing arbitrary
  strings into argv[] arrays using shell-like rules.
  .
- This package contains the runtime library and locale data.
+ This package contains the runtime library only.
  .
  This is a minimal package for use in debian-installer.

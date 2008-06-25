@@ -1,3 +1,12 @@
+popt (1.14-4) unstable; urgency=low
+
+  * Remove locale data from the udeb, and change the package 
+    description. The debian-installer developers are sure that they 
+    don't need the localization information, mainly error messages.
+    (Thanks to Frans Pop for bringing this to my attention.)
+
+ -- Paul Martin <pm@debian.org>  Wed, 25 Jun 2008 07:25:34 +0100
+
 popt (1.14-3) unstable; urgency=low
 
   * Add the locale data to the udeb, as per the package description. 
