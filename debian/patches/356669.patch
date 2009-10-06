@@ -1,7 +1,7 @@
-Index: popt-1.14/po/ca.po
+Index: popt-1.15/po/ca.po
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ popt-1.14/po/ca.po	2008-06-09 20:18:39.577280576 +0100
++++ popt-1.15/po/ca.po	2009-10-06 18:54:14.712007454 +0100
 @@ -0,0 +1,116 @@
 +# Catalan translation of popt.
 +# Copyright © Free Software Foundation, Inc.
@@ -119,16 +119,16 @@ Index: popt-1.14/po/ca.po
 +#: popthelp.c:510
 +msgid "[OPTION...]"
 +msgstr "[OPCIÓ...]"
-Index: popt-1.14/configure
+Index: popt-1.15/configure
 ===================================================================
---- popt-1.14.orig/configure	2008-06-09 20:19:19.137283049 +0100
-+++ popt-1.14/configure	2008-06-09 20:19:30.285277645 +0100
-@@ -2599,7 +2599,7 @@
+--- popt-1.15.orig/configure	2009-04-12 20:31:14.000000000 +0100
++++ popt-1.15/configure	2009-10-06 18:55:21.764008060 +0100
+@@ -2697,7 +2697,7 @@
  
  
  
--ALL_LINGUAS="cs da de es fi fr ga gl hu is it ja ko nb nl pl pt ro ru sk sl sv th tr uk vi wa zh_TW zh_CN"
-+ALL_LINGUAS="ca cs da de es fi fr ga gl hu is it ja ko nb nl pl pt ro ru sk sl sv th tr uk vi wa zh_TW zh_CN"
+-ALL_LINGUAS="cs da de eo es fi fr ga gl hu id is it ja ko nb nl pl pt ro ru sk sl sv th tr uk vi wa zh_TW zh_CN"
++ALL_LINGUAS="ca cs da de eo es fi fr ga gl hu id is it ja ko nb nl pl pt ro ru sk sl sv th tr uk vi wa zh_TW zh_CN"
  
  ac_ext=c
  ac_cpp='$CPP $CPPFLAGS'

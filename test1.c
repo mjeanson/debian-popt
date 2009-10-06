@@ -33,9 +33,9 @@ static int aVal = 141421;
 /*@unchecked@*/
 static int bVal = 141421;
 /*@unchecked@*/
-static int aFlag = 0;
+static unsigned int aFlag = 0x8aceU;
 /*@unchecked@*/
-static int bFlag = 0;
+static unsigned int bFlag = 0x8aceU;
 
 /*@unchecked@*/
 static int aInt = 271828;
@@ -145,10 +145,12 @@ static struct poptOption options[] = {
    { "argv", '\0', POPT_ARG_ARGV, &aArgv, 0,
 	"POPT_ARG_ARGV: append arg to array (can be used multiple times)",NULL},
 
-  { "bitset", '\0', POPT_BIT_SET | POPT_ARGFLAG_SHOW_DEFAULT, &aFlag, 0x4321,
-	"POPT_BIT_SET: |= 0x4321", 0},
-  { "bitclr", '\0', POPT_BIT_CLR | POPT_ARGFLAG_SHOW_DEFAULT, &aFlag, 0x1234,
-	"POPT_BIT_CLR: &= ~0x1234", 0},
+  { "bitset", '\0', POPT_BIT_SET | POPT_ARGFLAG_TOGGLE | POPT_ARGFLAG_SHOW_DEFAULT, &aFlag, 0x7777,
+	"POPT_BIT_SET: |= 0x7777", 0},
+  { "bitclr", '\0', POPT_BIT_CLR | POPT_ARGFLAG_TOGGLE | POPT_ARGFLAG_SHOW_DEFAULT, &aFlag, 0xf842,
+	"POPT_BIT_CLR: &= ~0xf842", 0},
+  { "bitxor", '\0', POPT_ARG_VAL | POPT_ARGFLAG_XOR | POPT_ARGFLAG_SHOW_DEFAULT, &aFlag, (0x8ace^0xfeed),
+	"POPT_ARGFLAG_XOR: ^= (0x8ace^0xfeed)", 0},
 
   { "nstr", '\0', POPT_ARG_STRING | POPT_ARGFLAG_SHOW_DEFAULT, &nStr, 0,
 	"POPT_ARG_STRING: (null)", NULL},
@@ -161,6 +163,7 @@ static struct poptOption options[] = {
 	NULL, NULL },
   { NULL, '\0', POPT_ARG_INCLUDE_TABLE, &callbackArgs, 0,
 	"Callback arguments", NULL },
+  POPT_AUTOALIAS
   POPT_AUTOHELP
   POPT_TABLEEND
 };
@@ -230,6 +233,9 @@ int main(int argc, const char ** argv)
     optCon = poptGetContext("test1", argc, argv, options, 0);
 /*@=temptrans@*/
     (void) poptReadConfigFile(optCon, "./test-poptrc");
+    (void) poptReadDefaultConfig(optCon, 1);
+
+    poptSetExecPath(optCon, ".", 1);
 
 #if 1
     while ((rc = poptGetNextOpt(optCon)) > 0)	/* Read all the options ... */
@@ -270,7 +276,7 @@ int main(int argc, const char ** argv)
     if (aVal != bVal)
 	fprintf(stdout, " aVal: %d", aVal);
     if (aFlag != bFlag)
-	fprintf(stdout, " aFlag: %d", aFlag);
+	fprintf(stdout, " aFlag: 0x%x", aFlag);
     if (aInt != bInt)
 	fprintf(stdout, " aInt: %d", aInt);
     if (aLong != bLong)
@@ -290,17 +296,21 @@ int main(int argc, const char ** argv)
 	while ((arg = *av++) != NULL)
 	    fprintf(stdout, " %s", arg);
     }
+/*@-nullpass@*/
     if (oStr != (char *)-1)
 	fprintf(stdout, " oStr: %s", (oStr ? oStr : "(none)"));
+/*@=nullpass@*/
     if (singleDash)
 	fprintf(stdout, " -");
 
-    rest = poptGetArgs(optCon);
-    if (rest) {
-	fprintf(stdout, " rest:");
-	while (*rest) {
-	    fprintf(stdout, " %s", *rest);
-	    rest++;
+    if (poptPeekArg(optCon) != NULL) {
+	rest = poptGetArgs(optCon);
+	if (rest) {
+	    fprintf(stdout, " rest:");
+	    while (*rest) {
+		fprintf(stdout, " %s", *rest);
+		rest++;
+	    }
 	}
     }
 

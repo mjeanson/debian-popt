@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Paul Martin <pm@debian.org>
 Build-Depends: debhelper (>> 7), gettext, quilt
 Homepage: http://rpm5.org/
-Standards-Version: 3.8.0
+Standards-Version: 3.8.3
 
 Package: libpopt0
 Architecture: any

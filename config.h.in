@@ -1,32 +1,8 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
-/* Predefined possible va_copy() implementation (id: ASP) */
-#define __VA_COPY_USE_ASP(d, s) do { *(d) = *(s); } while (0)
-
-/* Predefined possible va_copy() implementation (id: ASS) */
-#define __VA_COPY_USE_ASS(d, s) do { (d) = (s); } while (0)
-
-/* Predefined possible va_copy() implementation (id: C99) */
-#define __VA_COPY_USE_C99(d, s) va_copy((d), (s))
-
-/* Predefined possible va_copy() implementation (id: CPP) */
-#define __VA_COPY_USE_CPP(d, s) memcpy((void *)(d), (void *)(s), sizeof(*(s)))
-
-/* Predefined possible va_copy() implementation (id: CPS) */
-#define __VA_COPY_USE_CPS(d, s) memcpy((void *)&(d), (void *)&(s), sizeof((s)))
-
 /* Define to 1 if translation of program messages to the user's native
    language is requested. */
 #undef ENABLE_NLS
-
-/* Predefined possible va_copy() implementation (id: GCB) */
-#define __VA_COPY_USE_GCB(d, s) __builtin_va_copy((d), (s))
-
-/* Predefined possible va_copy() implementation (id: GCH) */
-#define __VA_COPY_USE_GCH(d, s) __va_copy((d), (s))
-
-/* Predefined possible va_copy() implementation (id: GCM) */
-#define __VA_COPY_USE_GCM(d, s) VA_COPY((d), (s))
 
 /* Define to 1 if you have the MacOS X function CFLocaleCopyCurrent in the
    CoreFoundation framework. */
@@ -45,6 +21,9 @@
 
 /* Define to 1 if you have the <float.h> header file. */
 #undef HAVE_FLOAT_H
+
+/* Define to 1 if you have the <fnmatch.h> header file. */
+#undef HAVE_FNMATCH_H
 
 /* Define to 1 if you have the `geteuid' function. */
 #undef HAVE_GETEUID
@@ -82,6 +61,9 @@
 /* Define to 1 if you have the `setregid' function. */
 #undef HAVE_SETREGID
 
+/* Define to 1 if you have the `srandom' function. */
+#undef HAVE_SRANDOM
+
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
 
@@ -112,12 +94,12 @@
 /* Define to 1 if you have the `vasprintf' function. */
 #undef HAVE_VASPRINTF
 
-/* Define if va_copy() macro exists (and no fallback implementation is
-   required) */
-#undef HAVE_VA_COPY
-
 /* Define to 1 if you have the `__secure_getenv' function. */
 #undef HAVE___SECURE_GETENV
+
+/* Define to the sub-directory in which libtool stores uninstalled libraries.
+   */
+#undef LT_OBJDIR
 
 /* Name of package */
 #undef PACKAGE
@@ -160,12 +142,3 @@
 
 /* Define like PROTOTYPES; this can be used by system headers. */
 #undef __PROTOTYPES
-
-/* Optional va_copy() implementation activation */
-#ifndef HAVE_VA_COPY
-#define va_copy(d, s) __VA_COPY_USE(d, s)
-#endif
-
-
-/* Define to id of used va_copy() implementation */
-#undef __VA_COPY_USE

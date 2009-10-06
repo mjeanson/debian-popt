@@ -1,4 +1,43 @@
+
+1.14 -> 1.15:
+    - release popt-1.15.
+    - rse: fix building under --disable-nls
+    - rse: fix building under non GLIBC platforms where glob_pattern_p fallback has to be used
+    - rse: fix building under platforms where FNM_EXTMATCH is not available
+    - jbj: poptReadFile: permit NULL if return values are not desired.
+    - jbj: poptReadFile: add routine.
+    - jbj: trim out escaped newline(s) from file content, other fixes.
+    - jbj: permit popt alias/exec to include content from a file.
+    - jbj: permit glob(3) patterns in appName field of popt alias/exec config.
+    - jbj: add test cases for bit operations and toggles.
+    - jbj: avoid displaying --[no]nofoo with POPT_ARGFLAG_TOGGLE.
+    - jbj: add poptArgInfo() to get argInfo, implementing POPT_ARGFLAG_TOGGLE.
+    - jbj: add longOptionStrcmp() to match w POPT_ARGFLAG_TOGGLE.
+    - jbj: change singleDash arg to a bit enum, use LF_ISSET(ONEDASH) instead.
+    - jbj: rework the glob wrappers into something more useful. portability todo++.
+    - jbj: stub in glob(3) wrappers for popt. more useful poptGlob() API next.
+    - jbj: add poptInit/poptFini/poptReadConfigFiles/poptSaneFile routines.
+    - jbj: rewrite poptReadConfigFile(), styling for (i.e. my) readbility.
+    - jbj: reserve a bit for --[no]opt prefix toggling.
+    - jbj: fix: check/print argv[0] in --help for NULL.
+    - jbj: permit type/group bitmasks to be changed (if needed somewhen).
+    - jbj: snip out 8 unused bits for argument groups.
+    - jbj: fix: eliminate dead code (CID#5).
+    - jbj: fix: rearrange code to better hint to coverity scan (CID#9).
+    - jbj: fix: rewrite (and simplify) strdup_locale_from_utf8() (CID#7, CID#8, CID#11, CID#12).
+    - jbj: test/use HAVE_SRANDOM to avoid portability issues.
+    - jbj: fix: remove AC_CHECK_VA_COPY check, va_copy is no longer used.
+    - jbj: add eo.po and id.po (Translation Project).
+    - jbj: updated da.po (Translation Project).
+    - jbj: extend coverage to several additional setup routines.
+    - jbj: add tests for --usage/--help coverage.
+    - jbj: add lconv/gcov targets to Makefile.am.
+    - jbj: refactor automagic (*opt->arg) option arg store to poptSaveArg().
+    - ldv: update INPUT tag in Doxyfile.in, fix doxygen warnings in popthelp.c.
+    - start popt-1.15 development.
+
 1.13 -> 1.14:
+    - release popt-1.14.
     - jbj: remove findme.c, add poptint.c, to po/POTFILES.in.
     - jbj: use stpcpy 2 more places (Wayne Davison<wayned@samba.org>).
     - jbj: add @LTLIBICONV@ when needed (Stanislav Brabec<sbrabec@suse.cz>).

@@ -69,7 +69,16 @@ typedef union poptArg_u {
 } poptArg;
 /*@=exporttype =fielduse@*/
 
-#define	poptArgType(_opt)	((_opt)->argInfo & POPT_ARG_MASK)
+/*@-exportvar@*/
+/*@unchecked@*/
+extern unsigned int _poptArgMask;
+/*@unchecked@*/
+extern unsigned int _poptGroupMask;
+/*@=exportvar@*/
+
+#define	poptArgType(_opt)	((_opt)->argInfo & _poptArgMask)
+#define	poptGroup(_opt)		((_opt)->argInfo & _poptGroupMask)
+
 #define	F_ISSET(_opt, _FLAG)	((_opt)->argInfo & POPT_ARGFLAG_##_FLAG)
 #define	LF_ISSET(_FLAG)		(argInfo & POPT_ARGFLAG_##_FLAG)
 #define	CBF_ISSET(_opt, _FLAG)	((_opt)->argInfo & POPT_CBFLAG_##_FLAG)
@@ -144,9 +153,9 @@ extern /*@only@*/ iconv_t iconv_open(const char *__tocode, const char *__fromcod
 	/*@*/;
 
 extern size_t iconv(iconv_t __cd, /*@null@*/ char ** __inbuf,
-		    /*@out@*/ size_t * __inbytesleft,
-		    /*@out@*/ char ** __outbuf,
-		    /*@out@*/ size_t * __outbytesleft)
+		    /*@null@*/ /*@out@*/ size_t * __inbytesleft,
+		    /*@null@*/ /*@out@*/ char ** __outbuf,
+		    /*@null@*/ /*@out@*/ size_t * __outbytesleft)
 	/*@modifies __cd,
 		*__inbuf, *__inbytesleft, *__outbuf, *__outbytesleft @*/;
 
@@ -184,17 +193,17 @@ const char *POPT_next_char (/*@returned@*/ const char *str)
 
 #endif
 
-#ifdef HAVE_LIBINTL_H
+#if defined(ENABLE_NLS) && defined(HAVE_LIBINTL_H)
 #include <libintl.h>
 #endif
 
-#if defined(HAVE_GETTEXT) && !defined(__LCLINT__)
+#if defined(ENABLE_NLS) && defined(HAVE_GETTEXT) && !defined(__LCLINT__)
 #define _(foo) gettext(foo)
 #else
 #define _(foo) foo
 #endif
 
-#if defined(HAVE_DCGETTEXT) && !defined(__LCLINT__)
+#if defined(ENABLE_NLS) && defined(HAVE_DCGETTEXT) && !defined(__LCLINT__)
 #define D_(dom, str) POPT_dgettext(dom, str)
 #define POPT_(foo) D_("popt", foo)
 #else
