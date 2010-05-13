@@ -1,7 +1,7 @@
-Index: popt-1.15/popt.c
+Index: popt-1.16/popt.c
 ===================================================================
---- popt-1.15.orig/popt.c	2009-10-06 18:56:04.086007174 +0100
-+++ popt-1.15/popt.c	2009-10-06 18:56:06.390006971 +0100
+--- popt-1.16.orig/popt.c	2010-05-13 04:57:46.853009777 +0100
++++ popt-1.16/popt.c	2010-05-13 04:57:52.006009545 +0100
 @@ -184,6 +184,7 @@
  	con->os->next = 1;		/* skip argv[0] */
  
@@ -10,7 +10,7 @@ Index: popt-1.15/popt.c
  /*@-dependenttrans -assignexpose@*/	/* FIX: W2DO? */
      con->options = options;
  /*@=dependenttrans =assignexpose@*/
-@@ -1099,7 +1100,19 @@
+@@ -1358,7 +1359,19 @@
  		    return 0;
  		}
  		if (con->leftovers != NULL)	/* XXX can't happen */
@@ -31,7 +31,7 @@ Index: popt-1.15/popt.c
  		continue;
  	    }
  
-@@ -1353,6 +1366,8 @@
+@@ -1612,6 +1625,8 @@
  
  poptContext poptFreeContext(poptContext con)
  {
@@ -40,7 +40,7 @@ Index: popt-1.15/popt.c
      if (con == NULL) return con;
      poptResetContext(con);
      con->os->argb = _free(con->os->argb);
-@@ -1363,7 +1378,11 @@
+@@ -1622,7 +1637,11 @@
      con->execs = poptFreeItems(con->execs, con->numExecs);
      con->numExecs = 0;
  
@@ -52,11 +52,11 @@ Index: popt-1.15/popt.c
      con->finalArgv = _free(con->finalArgv);
      con->appName = _free(con->appName);
      con->otherHelp = _free(con->otherHelp);
-Index: popt-1.15/poptint.h
+Index: popt-1.16/poptint.h
 ===================================================================
---- popt-1.15.orig/poptint.h	2009-10-06 18:56:04.097007072 +0100
-+++ popt-1.15/poptint.h	2009-10-06 18:56:06.391006841 +0100
-@@ -112,6 +112,7 @@
+--- popt-1.16.orig/poptint.h	2010-05-13 04:57:46.878010140 +0100
++++ popt-1.16/poptint.h	2010-05-13 04:57:52.008009414 +0100
+@@ -119,6 +119,7 @@
  /*@owned@*/ /*@null@*/
      poptArgv leftovers;
      int numLeftovers;

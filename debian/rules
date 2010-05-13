@@ -43,7 +43,7 @@ endif
 objdir = $(CURDIR)/obj-$(DEB_HOST_GNU_TYPE)
 objdir_udeb = $(objdir)-udeb
 
-configure: patch configure-deb-stamp configure-udeb-stamp
+configure: configure-deb-stamp configure-udeb-stamp
 configure-deb-stamp:
 	dh_testdir
 	# make build dir
@@ -62,7 +62,7 @@ configure-udeb-stamp:
 	../configure --prefix=/usr --mandir=/usr/share/man --enable-shared $(CROSS)
 	touch $@
 
-build: patch build-arch-deb-stamp build-arch-udeb-stamp
+build: build-arch-deb-stamp build-arch-udeb-stamp
 
 build-arch-deb-stamp: configure-deb-stamp
 	dh_testdir
@@ -74,8 +74,7 @@ build-arch-udeb-stamp: configure-udeb-stamp
 	cd $(objdir_udeb) && $(MAKE) CFLAGS="$(cflags_udeb)"
 	touch $@
 
-clean: clean-patched unpatch
-clean-patched:
+clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp config.log
@@ -152,14 +151,6 @@ binary-arch: build install
 	dh_md5sums
 	dh_builddeb
 
-patch: patch-stamp
-patch-stamp:
-	QUILT_PATCHES=debian/patches quilt push -a || test $$? = 2
-	touch patch-stamp
-
-unpatch:
-	QUILT_PATCHES=debian/patches quilt pop -a -R || test $$? = 2
-	rm -rf .pc patch-stamp
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure patch unpatch clean-patched
+.PHONY: build clean binary-indep binary-arch binary install configure 

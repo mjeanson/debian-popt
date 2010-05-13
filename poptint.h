@@ -9,6 +9,8 @@
 #ifndef H_POPTINT
 #define H_POPTINT
 
+#include <stdint.h>
+
 /**
  * Wrapper to free(3), hides const compilation noise, permit NULL, return NULL.
  * @param p		memory to free
@@ -42,6 +44,10 @@ typedef struct {
 #define PBM_CLR(d, s)   (__PBM_BITS (s)[__PBM_IX (d)] &= ~__PBM_MASK (d))
 #define PBM_ISSET(d, s) ((__PBM_BITS (s)[__PBM_IX (d)] & __PBM_MASK (d)) != 0)
 
+extern void poptJlu32lpair(/*@null@*/ const void *key, size_t size,
+                uint32_t *pc, uint32_t *pb)
+        /*@modifies *pc, *pb@*/;
+
 /** \ingroup popt
  * Typedef's for string and array of strings.
  */
@@ -58,6 +64,7 @@ typedef union poptArg_u {
 /*@shared@*/
     void * ptr;
     int * intp;
+    short * shortp;
     long * longp;
     long long * longlongp;
     float * floatp;

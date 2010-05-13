@@ -38,6 +38,10 @@ static unsigned int aFlag = 0x8aceU;
 static unsigned int bFlag = 0x8aceU;
 
 /*@unchecked@*/
+static short aShort = (short)4523;
+/*@unchecked@*/
+static short bShort = (short)4523;
+/*@unchecked@*/
 static int aInt = 271828;
 /*@unchecked@*/
 static int bInt = 271828;
@@ -57,8 +61,17 @@ static float bFloat = 3.1415926535;
 static double aDouble = 9.86960440108935861883;
 /*@unchecked@*/
 static double bDouble = 9.86960440108935861883;
+
 /*@unchecked@*/ /*@only@*/ /*@null@*/
 static const char ** aArgv = NULL;
+/*@unchecked@*/ /*@only@*/ /*@null@*/
+static void * aBits = NULL;
+/*@unchecked@*/ /*@observer@*/
+static const char *attributes[] = {
+    "foo", "bar", "baz", "bing", "bang", "boom"
+};
+/*@unchecked@*/
+static size_t nattributes = (sizeof(attributes) / sizeof(attributes[0]));
 
 /*@unchecked@*/ /*@null@*/
 static char * oStr = (char *) -1;
@@ -126,6 +139,8 @@ static struct poptOption options[] = {
 
   { "int", 'i', POPT_ARG_INT | POPT_ARGFLAG_SHOW_DEFAULT, &aInt, 0,
 	"POPT_ARG_INT: 271828", NULL },
+  { "short", 's', POPT_ARG_SHORT | POPT_ARGFLAG_SHOW_DEFAULT, &aShort, 0,
+	"POPT_ARG_SHORT: 4523", NULL },
   { "long", 'l', POPT_ARG_LONG | POPT_ARGFLAG_SHOW_DEFAULT, &aLong, 0,
 	"POPT_ARG_LONG: 738905609", NULL },
   { "longlong", 'L', POPT_ARG_LONGLONG | POPT_ARGFLAG_SHOW_DEFAULT, &aLongLong, 0,
@@ -137,13 +152,17 @@ static struct poptOption options[] = {
 
    { "randint", '\0', POPT_ARG_INT|POPT_ARGFLAG_RANDOM, &aInt, 0,
 	"POPT_ARGFLAG_RANDOM: experimental", NULL },
+   { "randshort", '\0', POPT_ARG_SHORT|POPT_ARGFLAG_RANDOM, &aShort, 0,
+	"POPT_ARGFLAG_RANDOM: experimental", NULL },
    { "randlong", '\0', POPT_ARG_LONG|POPT_ARGFLAG_RANDOM, &aLong, 0,
 	"POPT_ARGFLAG_RANDOM: experimental", NULL },
    { "randlonglong", '\0', POPT_ARG_LONGLONG|POPT_ARGFLAG_RANDOM, &aLongLong, 0,
 	"POPT_ARGFLAG_RANDOM: experimental", NULL },
 
    { "argv", '\0', POPT_ARG_ARGV, &aArgv, 0,
-	"POPT_ARG_ARGV: append arg to array (can be used multiple times)",NULL},
+	"POPT_ARG_ARGV: append string to argv array (can be used multiple times)","STRING"},
+   { "bits", '\0', POPT_ARG_BITSET|POPT_ARGFLAG_DOC_HIDDEN, &aBits, 0,
+	"POPT_ARG_BITSET: add string to bit set (can be used multiple times)","STRING"},
 
   { "bitset", '\0', POPT_BIT_SET | POPT_ARGFLAG_TOGGLE | POPT_ARGFLAG_SHOW_DEFAULT, &aFlag, 0x7777,
 	"POPT_BIT_SET: |= 0x7777", 0},
@@ -170,11 +189,11 @@ static struct poptOption options[] = {
 
 static void resetVars(void)
 	/*@globals arg1, arg2, arg3, inc, shortopt,
-		aVal, aFlag, aInt, aLong, aLongLong, aFloat, aDouble, aArgv,
-		oStr, singleDash, pass2 @*/
+		aVal, aFlag, aShort, aInt, aLong, aLongLong, aFloat, aDouble,
+		aArgv, aBits, oStr, singleDash, pass2 @*/
 	/*@modifies arg1, arg2, arg3, inc, shortopt,
-		aVal, aFlag, aInt, aLong, aLongLong, aFloat, aDouble, aArgv,
-		oStr, singleDash, pass2 @*/
+		aVal, aFlag, aShort, aInt, aLong, aLongLong, aFloat, aDouble,
+		aArgv, aBits, oStr, singleDash, pass2 @*/
 {
     arg1 = 0;
     arg2 = "(none)";
@@ -185,6 +204,7 @@ static void resetVars(void)
     aVal = bVal;
     aFlag = bFlag;
 
+    aShort = bShort;
     aInt = bInt;
     aLong = bLong;
     aLongLong = bLongLong;
@@ -202,6 +222,8 @@ static void resetVars(void)
 	free(aArgv);
 	aArgv = NULL;
     }
+    if (aBits)
+	(void) poptBitsClr(aBits);
 
     oStr = (char *) -1;
 
@@ -277,6 +299,8 @@ int main(int argc, const char ** argv)
 	fprintf(stdout, " aVal: %d", aVal);
     if (aFlag != bFlag)
 	fprintf(stdout, " aFlag: 0x%x", aFlag);
+    if (aShort != bShort)
+	fprintf(stdout, " aShort: %hd", aShort);
     if (aInt != bInt)
 	fprintf(stdout, " aInt: %d", aInt);
     if (aLong != bLong)
@@ -295,6 +319,17 @@ int main(int argc, const char ** argv)
 	fprintf(stdout, " aArgv:");
 	while ((arg = *av++) != NULL)
 	    fprintf(stdout, " %s", arg);
+    }
+    if (aBits) {
+	const char * separator = " ";
+	size_t i;
+	fprintf(stdout, " aBits:");
+ 	for (i = 0; i < nattributes; i++) {
+	    if (!poptBitsChk(aBits, attributes[i]))
+		continue;
+	    fprintf(stdout, "%s%s", separator, attributes[i]);
+	    separator = ",";
+	}
     }
 /*@-nullpass@*/
     if (oStr != (char *)-1)

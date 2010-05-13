@@ -1,8 +1,8 @@
-Index: popt-1.15/popt.c
+Index: popt-1.16/popt.c
 ===================================================================
---- popt-1.15.orig/popt.c	2009-10-06 18:56:06.390006971 +0100
-+++ popt-1.15/popt.c	2009-10-06 18:56:24.132007037 +0100
-@@ -817,8 +817,13 @@
+--- popt-1.16.orig/popt.c	2010-05-13 04:57:52.006009545 +0100
++++ popt-1.16/popt.c	2010-05-13 04:58:15.027009502 +0100
+@@ -1023,8 +1023,13 @@
  
  int poptSaveLong(long * arg, unsigned int argInfo, long aLong)
  {
@@ -16,7 +16,7 @@ Index: popt-1.15/popt.c
  	return POPT_ERROR_NULLARG;
  
      if (aLong != 0 && LF_ISSET(RANDOM)) {
-@@ -858,8 +863,13 @@
+@@ -1056,8 +1061,13 @@
  
  int poptSaveInt(/*@null@*/ int * arg, unsigned int argInfo, long aLong)
  {
