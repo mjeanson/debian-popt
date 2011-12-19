@@ -7,6 +7,8 @@
 
 DEB_HOST_GNU_TYPE	:= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE      := $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+DEB_HOST_MULTIARCH      := $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+
 ifneq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
 CROSS= --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE)
 else
@@ -50,7 +52,7 @@ configure-deb-stamp:
 	mkdir $(objdir)
 	# Add here commands to configure the package.
 	cd $(objdir) && \
-	../configure --prefix=/usr --mandir=/usr/share/man --enable-shared $(CROSS)
+	../configure --libdir=/usr/lib/$(DEB_HOST_MULTIARCH) --prefix=/usr --mandir=/usr/share/man --enable-shared $(CROSS)
 	touch $@
 
 configure-udeb-stamp:
@@ -62,7 +64,11 @@ configure-udeb-stamp:
 	../configure --prefix=/usr --mandir=/usr/share/man --enable-shared $(CROSS)
 	touch $@
 
-build: build-arch-deb-stamp build-arch-udeb-stamp
+build: build-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp
+
+build-stamp: build-arch-deb-stamp build-arch-udeb-stamp
 
 build-arch-deb-stamp: configure-deb-stamp
 	dh_testdir
@@ -124,6 +130,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 
+	sh debian/preprocess
 	dh_install --list-missing
 #	dh_installdebconf	
 	dh_installdocs
