@@ -1,3 +1,9 @@
+popt (1.16-3) unstable; urgency=low
+
+  * Multiarch build cleanup. Thanks to Jakub Wilk. (Closes: #638447)
+
+ -- Paul Martin <pm@debian.org>  Tue, 20 Dec 2011 13:26:18 +0000
+
 popt (1.16-2) unstable; urgency=low
 
   * Update to standards version 3.9.2

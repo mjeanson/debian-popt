@@ -95,6 +95,11 @@ clean:
 	# Remove install dirs
 	rm -rf $(CURDIR)/debian/tmp $(CURDIR)/debian/tmp-udeb
 
+	# Remove auto-generated files
+	rm -f $(CURDIR)/debian/libpopt0.install
+	rm -f $(CURDIR)/debian/libpopt0.links
+	rm -f $(CURDIR)/debian/libpopt-dev.links
+
 	# Add here commands to clean up after the build process.
 	[ ! -f Makefile ] || $(MAKE) distclean
 
