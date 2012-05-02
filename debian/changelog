@@ -1,3 +1,15 @@
+popt (1.16-4) unstable; urgency=low
+
+  * Multiarch build cleanup take 2. (Closes: #670022)
+  * Ignoring localizations binary endianness versus multiarch problem.
+    That's something for gettext to fix. Thanks for the advice, vorlon.
+    (Ignoring: #670023)
+  * Update to debhelper 9.
+  * Update to standards version 3.9.2
+  * Updated copyright file and converted to machine readable format.
+
+ -- Paul Martin <pm@debian.org>  Wed, 02 May 2012 16:22:09 +0100
+
 popt (1.16-3) unstable; urgency=low
 
   * Multiarch build cleanup. Thanks to Jakub Wilk. (Closes: #638447)
