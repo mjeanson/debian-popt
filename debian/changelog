@@ -1,3 +1,9 @@
+popt (1.16-5) unstable; urgency=low
+
+  * Enabled hardened build flags. (Closes: #672835)
+
+ -- Paul Martin <pm@debian.org>  Mon, 14 May 2012 11:23:52 +0100
+
 popt (1.16-4) unstable; urgency=low
 
   * Multiarch build cleanup take 2. (Closes: #670022)

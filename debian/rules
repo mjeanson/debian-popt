@@ -29,12 +29,10 @@ version = 1.7-4
 endif
 endif
 
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-cflags = -O0 -Wall -W -g -D_GNU_SOURCE -D_REENTRANT
-else
-cflags = -O2 -Wall -W -g -D_GNU_SOURCE -D_REENTRANT
-endif
+cflags = `dpkg-buildflags --get CFLAGS` `dpkg-buildflags --get CPPFLAGS`
+cflags += -Wall -W -D_GNU_SOURCE -D_REENTRANT
 cflags_udeb = -Os -Wall -W -g -D_GNU_SOURCE -D_REENTRANT
+ldflags = `dpkg-buildflags --get LDFLAGS`
 
 ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 install = install
@@ -72,7 +70,7 @@ build-stamp: build-arch-deb-stamp build-arch-udeb-stamp
 
 build-arch-deb-stamp: configure-deb-stamp
 	dh_testdir
-	cd $(objdir) && $(MAKE) CFLAGS="$(cflags)"
+	cd $(objdir) && $(MAKE) CFLAGS="$(cflags)" LDFLAGS="$(ldflags)"
 	touch $@
 
 build-arch-udeb-stamp: configure-udeb-stamp
