@@ -1,3 +1,10 @@
+popt (1.16-6) unstable; urgency=low
+
+  * Change dependency on gettext to a version that has a msgfmt that
+    always builds little endian .mo files. (Closes: #670023)
+
+ -- Paul Martin <pm@debian.org>  Tue, 29 May 2012 10:27:53 +0100
+
 popt (1.16-5) unstable; urgency=low
 
   * Enabled hardened build flags. (Closes: #672835)
