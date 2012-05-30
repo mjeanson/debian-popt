@@ -1,3 +1,11 @@
+popt (1.16-7) unstable; urgency=low
+
+  * Fix install directory for the pkgconfig file. (Closes: #658663)
+    Thanks to Christoph Biedl for spotting the oddity.
+    dh_install strikes again!
+
+ -- Paul Martin <pm@debian.org>  Wed, 30 May 2012 22:56:47 +0100
+
 popt (1.16-6) unstable; urgency=low
 
   * Change dependency on gettext to a version that has a msgfmt that
