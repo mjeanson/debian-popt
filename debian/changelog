@@ -1,3 +1,14 @@
+popt (1.16-10) unstable; urgency=low
+
+  * debian/rules: move dependency on target autoreconf-stamp from 
+    configure (which isn't called) to configure-deb-stamp and 
+    configure-udeb-stamp.
+  * Patches: 757935-autoreconf.patch: add change to Makefile.am of 
+    testit.sh path.
+  * That'll teach me to try to be too clever! (Closes: #757935)
+
+ -- Paul Martin <pm@debian.org>  Mon, 25 Aug 2014 16:15:25 +0100
+
 popt (1.16-9) unstable; urgency=low
 
   * Patches:
