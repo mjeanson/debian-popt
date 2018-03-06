@@ -1,4 +1,21 @@
-
+1.15 -> 1.16:
+    - add lv.po, update translations (Translation Project).
+    - include xcode project files in distributed popt tar ball.
+    - make distcheck is now squeaky clean.
+    - permit VPATH builds.
+    - add shallow tests using ISP/RAS api-sanity-autotest.pl.
+    - prefix bit set routines with popt to avoid symbol coolisions w rpm.
+    - add tdict.c to exercise popt bit sets against /usr/dict/words.
+    - add poptBitsArgs() method to generate args bit set.
+    - add methods for bit set union and intersection.
+    - permit comma separated attribute lists, handle negated attributes.
+    - better test for POPT_ARG_BITSET.
+    - add POPT_ARG_BITSET handling.
+    - add POPT_ARG_SHORT handling.
+    - handle all callback traversals within a C switch (for extendability ease).
+    - add popt.pc.
+    - devzero2000: add AC_CONFIG_AUX_DIR, AC_CONFIG_MACRO_DIR to configure. Create build-aux 
+    - devzero2000: del acinclude.m4 : AC_CHECK_VA_COPY is not used
 1.14 -> 1.15:
     - release popt-1.15.
     - rse: fix building under --disable-nls

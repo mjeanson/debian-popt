@@ -37,6 +37,8 @@
 
 #define POPT_ARG_MAINCALL	16U+11U	/*!< EXPERIMENTAL: return (*arg) (argc, argv) */
 #define	POPT_ARG_ARGV		12U	/*!< dupe'd arg appended to realloc'd argv array. */
+#define	POPT_ARG_SHORT		13U	/*!< arg ==> short */
+#define	POPT_ARG_BITSET		16U+14U	/*!< arg ==> bit set */
 
 #define POPT_ARG_MASK		0x000000FFU
 #define POPT_GROUP_MASK		0x0000FF00U
@@ -605,11 +607,11 @@ int poptStrippedArgv(poptContext con, int argc, char ** argv)
  * @retval *argvp	argv array
  * @param argInfo	(unused)
  * @param val		string arg to add (using strdup)
- * @return		0 always
+ * @return		0 on success, POPT_ERROR_NULLARG/POPT_ERROR_BADOPERATION
  */
 /*@unused@*/
 int poptSaveString(/*@null@*/ const char *** argvp, unsigned int argInfo,
-		const char * val)
+		/*@null@*/const char * val)
 	/*@modifies *argvp @*/;
 
 /**
@@ -646,6 +648,22 @@ int poptSaveLong(/*@null@*/ long * arg, unsigned int argInfo, long aLong)
 /*@=incondefs@*/
 
 /**
+ * Save a short integer, performing logical operation with value.
+ * @warning Alignment check may be too strict on certain platorms.
+ * @param arg		short pointer, aligned on short boundary.
+ * @param argInfo	logical operation (see POPT_ARGFLAG_*)
+ * @param aLong		value to use
+ * @return		0 on success, POPT_ERROR_NULLARG/POPT_ERROR_BADOPERATION
+ */
+/*@-incondefs@*/
+/*@unused@*/
+int poptSaveShort(/*@null@*/ short * arg, unsigned int argInfo, long aLong)
+	/*@globals internalState @*/
+	/*@modifies *arg, internalState @*/
+	/*@requires maxSet(arg) >= 0 /\ maxRead(arg) == 0 @*/;
+/*@=incondefs@*/
+
+/**
  * Save an integer, performing logical operation with value.
  * @warning Alignment check may be too strict on certain platorms.
  * @param arg		integer pointer, aligned on int boundary.
@@ -661,7 +679,64 @@ int poptSaveInt(/*@null@*/ int * arg, unsigned int argInfo, long aLong)
 	/*@requires maxSet(arg) >= 0 /\ maxRead(arg) == 0 @*/;
 /*@=incondefs@*/
 
+/* The bit set typedef. */
+/*@-exporttype@*/
+typedef struct poptBits_s {
+    unsigned int bits[1];
+} * poptBits;
+/*@=exporttype@*/
+
+#define _POPT_BITS_N    1024U    /* estimated population */
+#define _POPT_BITS_M    ((3U * _POPT_BITS_N) / 2U)
+#define _POPT_BITS_K    16U      /* no. of linear hash combinations */
+
+/*@-exportlocal -exportvar -globuse @*/
+/*@unchecked@*/
+extern unsigned int _poptBitsN;
+/*@unchecked@*/
+extern  unsigned int _poptBitsM;
+/*@unchecked@*/
+extern  unsigned int _poptBitsK;
+/*@=exportlocal =exportvar =globuse @*/
+
+/*@-exportlocal@*/
+int poptBitsAdd(/*@null@*/poptBits bits, /*@null@*/const char * s)
+	/*@modifies bits @*/;
+/*@=exportlocal@*/
+int poptBitsChk(/*@null@*/poptBits bits, /*@null@*/const char * s)
+	/*@*/;
+int poptBitsClr(/*@null@*/poptBits bits)
+	/*@modifies bits @*/;
+/*@-exportlocal@*/
+int poptBitsDel(/*@null@*/poptBits bits, /*@null@*/const char * s)
+	/*@modifies bits @*/;
+/*@-fcnuse@*/
+int poptBitsIntersect(/*@null@*/ poptBits * ap, /*@null@*/ const poptBits b)
+	/*@modifies *ap @*/;
+int poptBitsUnion(/*@null@*/ poptBits * ap, /*@null@*/ const poptBits b)
+	/*@modifies *ap @*/;
+int poptBitsArgs(/*@null@*/ poptContext con, /*@null@*/ poptBits * ap)
+	/*@modifies con, *ap @*/;
+/*@=fcnuse@*/
+/*@=exportlocal@*/
+
+/**
+ * Save a string into a bit set (experimental).
+ * @retval *bits	bit set (lazily malloc'd if NULL)
+ * @param argInfo	logical operation (see POPT_ARGFLAG_*)
+ * @param s		string to add to bit set
+ * @return		0 on success, POPT_ERROR_NULLARG/POPT_ERROR_BADOPERATION
+ */
+/*@-incondefs@*/
+/*@unused@*/
+int poptSaveBits(/*@null@*/ poptBits * bitsp, unsigned int argInfo,
+		/*@null@*/ const char * s)
+	/*@globals _poptBitsN, _poptBitsM, _poptBitsK, internalState @*/
+	/*@modifies *bitsp, _poptBitsN, _poptBitsM, _poptBitsK, internalState @*/;
+/*@=incondefs@*/
+
 /*@=type@*/
+
 #ifdef  __cplusplus
 }
 #endif
