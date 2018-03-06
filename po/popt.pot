@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# This file is put in the public domain.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2004-02-29 07:48-0500\n"
+"Project-Id-Version: popt 1.14\n"
+"Report-Msgid-Bugs-To: <popt-devel@rpm5.org>\n"
+"POT-Creation-Date: 2008-04-02 13:18-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,103 +15,119 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: popt.c:35
+#: popt.c:42
 msgid "unknown errno"
 msgstr ""
 
-#: popt.c:964
+#: popt.c:1141
 #, c-format
-msgid "option type (%d) not implemented in popt\n"
+msgid "option type (%u) not implemented in popt\n"
 msgstr ""
 
-#: popt.c:1184
+#: popt.c:1349
 msgid "missing argument"
 msgstr ""
 
-#: popt.c:1186
+#: popt.c:1351
 msgid "unknown option"
 msgstr ""
 
-#: popt.c:1188
+#: popt.c:1353
 msgid "mutually exclusive logical operations requested"
 msgstr ""
 
-#: popt.c:1190
+#: popt.c:1355
 msgid "opt->arg should not be NULL"
 msgstr ""
 
-#: popt.c:1192
+#: popt.c:1357
 msgid "aliases nested too deeply"
 msgstr ""
 
-#: popt.c:1194
+#: popt.c:1359
 msgid "error in parameter quoting"
 msgstr ""
 
-#: popt.c:1196
+#: popt.c:1361
 msgid "invalid numeric value"
 msgstr ""
 
-#: popt.c:1198
+#: popt.c:1363
 msgid "number too large or too small"
 msgstr ""
 
-#: popt.c:1200
+#: popt.c:1365
 msgid "memory allocation failed"
 msgstr ""
 
-#: popt.c:1204
+#: popt.c:1369
 msgid "unknown error"
 msgstr ""
 
-#: popthelp.c:64 popthelp.c:75
+#: popthelp.c:75 popthelp.c:86
 msgid "Show this help message"
 msgstr ""
 
-#: popthelp.c:65 popthelp.c:76
+#: popthelp.c:76 popthelp.c:87
 msgid "Display brief usage message"
 msgstr ""
 
-#: popthelp.c:79
+#: popthelp.c:90
 msgid "Display option defaults in message"
 msgstr ""
 
-#: popthelp.c:124
+#: popthelp.c:92
+msgid "Terminate options"
+msgstr ""
+
+#: popthelp.c:191
+msgid "Help options:"
+msgstr ""
+
+#: popthelp.c:192
+msgid "Options implemented via popt alias/exec:"
+msgstr ""
+
+#: popthelp.c:200
 msgid "NONE"
 msgstr ""
 
-#: popthelp.c:126
+#: popthelp.c:202
 msgid "VAL"
 msgstr ""
 
-#: popthelp.c:130
+#: popthelp.c:206
 msgid "INT"
 msgstr ""
 
-#: popthelp.c:131
+#: popthelp.c:207
 msgid "LONG"
 msgstr ""
 
-#: popthelp.c:132
+#: popthelp.c:208
+msgid "LONGLONG"
+msgstr ""
+
+#: popthelp.c:209
 msgid "STRING"
 msgstr ""
 
-#: popthelp.c:133
+#: popthelp.c:210
 msgid "FLOAT"
 msgstr ""
 
-#: popthelp.c:134
+#: popthelp.c:211
 msgid "DOUBLE"
 msgstr ""
 
-#: popthelp.c:135
+#: popthelp.c:214
 msgid "ARG"
 msgstr ""
 
-#: popthelp.c:548
+#: popthelp.c:633
 msgid "Usage:"
 msgstr ""
 
-#: popthelp.c:572
+#: popthelp.c:657
 msgid "[OPTION...]"
 msgstr ""

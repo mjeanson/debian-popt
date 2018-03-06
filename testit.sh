@@ -9,7 +9,7 @@ run() {
 
     result=`$builddir/$prog $*`
     if [ "$answer" != "$result" ]; then
-	echo "Test \"$*\" failed with: \"$result\" != \"$answer\" "
+	echo "Test \"$prog $*\" failed with: \"$result\" != \"$answer\" "
 	exit 2
     fi
 }
@@ -76,25 +76,37 @@ run test1 "test1 - 23" "--echo-args -a" --echo-args -e -a
 run test1 "test1 - 24" "arg1: 0 arg2: (none) short: 1" -onedash
 run test1 "test1 - 25" "arg1: 0 arg2: (none) short: 1" --onedash
 run test1 "test1 - 26" "callback: c arg for cb2 foo arg1: 0 arg2: (none)" --cb2 foo
-run test1 "test1 - 27" "arg1: 0 arg2: (none) -" -
-run test1 "test1 - 28" "arg1: 0 arg2: foo -" - -2 foo
+run test1 "test1 - 27" "arg1: 0 arg2: (none) rest: -" -
+run test1 "test1 - 28" "arg1: 0 arg2: foo rest: -" - -2 foo
 run test1 "test1 - 29" "arg1: 0 arg2: bbbb" --arg2=aaaa -2 bbbb
 run test1 "test1 - 30" "arg1: 0 arg2: 'foo bingo' rest: boggle" --grab bingo boggle
 run test1 "test1 - 31" "arg1: 0 arg2: 'foo bar' rest: boggle" --grabbar boggle
 
-run test1 "test1 - 32" "arg1: 0 arg2: (none) aFloat: 10.1" -f 10.1
-run test1 "test1 - 33" "arg1: 0 arg2: (none) aFloat: 10.1" --float 10.1
-run test1 "test1 - 34" "arg1: 0 arg2: (none) aDouble: 10.1" -d 10.1
-run test1 "test1 - 35" "arg1: 0 arg2: (none) aDouble: 10.1" --double 10.1
-run test1 "test1 - 36" "arg1: 0 arg2: (none) oStr: (none)" --optional
-run test1 "test1 - 37" "arg1: 0 arg2: (none) oStr: yadda" --optional=yadda
-run test1 "test1 - 38" "arg1: 0 arg2: (none) oStr: yadda" --optional yadda
-run test1 "test1 - 39" "arg1: 0 arg2: (none) oStr: ping rest: pong" --optional=ping pong
-run test1 "test1 - 40" "arg1: 0 arg2: (none) oStr: ping rest: pong" --optional ping pong
+run test1 "test1 - 32" "arg1: 0 arg2: (none) aInt: 123456789" -i 123456789
+run test1 "test1 - 33" "arg1: 0 arg2: (none) aInt: 123456789" --int 123456789
+run test1 "test1 - 34" "arg1: 0 arg2: (none) aLong: 1123456789" -l 1123456789
+run test1 "test1 - 35" "arg1: 0 arg2: (none) aLong: 1123456789" --long 1123456789
+run test1 "test1 - 36" "arg1: 0 arg2: (none) aLongLong: 1111123456789" -L 1111123456789
+run test1 "test1 - 37" "arg1: 0 arg2: (none) aLongLong: 1111123456789" --longlong 1111123456789
 
-run_diff test3 "test3 - 41" test3-data/01.input test3-data/01.answer
-run_diff test3 "test3 - 42" test3-data/02.input test3-data/02.answer
-run_diff test3 "test3 - 43" test3-data/03.input test3-data/03.answer
+run test1 "test1 - 38" "arg1: 0 arg2: (none) aFloat: 10.1" -f 10.1
+run test1 "test1 - 39" "arg1: 0 arg2: (none) aFloat: 10.1" --float 10.1
+run test1 "test1 - 40" "arg1: 0 arg2: (none) aDouble: 10.1" -d 10.1
+run test1 "test1 - 41" "arg1: 0 arg2: (none) aDouble: 10.1" --double 10.1
+
+run test1 "test1 - 42" "arg1: 0 arg2: (none) oStr: (none)" --optional
+run test1 "test1 - 43" "arg1: 0 arg2: (none) oStr: yadda" --optional=yadda
+run test1 "test1 - 44" "arg1: 0 arg2: (none) oStr: yadda" --optional yadda
+run test1 "test1 - 45" "arg1: 0 arg2: (none) oStr: ping rest: pong" --optional=ping pong
+run test1 "test1 - 46" "arg1: 0 arg2: (none) oStr: ping rest: pong" --optional ping pong
+run test1 "test1 - 47" "arg1: 0 arg2: (none) aArgv: A B rest: C" --argv A --argv B C
+
+run test1 "test1 - 48" "arg1: 0 arg2: foo=bar" -2foo=bar
+run test1 "test1 - 49" "arg1: 0 arg2: foo=bar" -2=foo=bar
+
+#run_diff test3 "test3 - 51" test3-data/01.input test3-data/01.answer
+#run_diff test3 "test3 - 52" test3-data/02.input test3-data/02.answer
+#run_diff test3 "test3 - 53" test3-data/03.input test3-data/03.answer
 
 echo ""
 echo "Passed."

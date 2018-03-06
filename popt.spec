@@ -1,52 +1,63 @@
-#
-# Note: popt is now an rpm sub-package (including libpopt.so*) so you probably
-# shouldn't need to use this spec file to package popt anymore.
-#
+%define	_libdir	/%{_lib}
+
 Summary: A C library for parsing command line parameters.
 Name: popt
-Version: 1.10.1
-Release: 0.1
+Version: 1.14
+Release: 1
 License: X Consortium
 Group: System Environment/Libraries
-Source: ftp://ftp.redhat.com/pub/redhat/code/popt/popt-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}root
+Source: http://rpm5.org/files/popt/%{name}-%{version}.tar.gz
+BuildRequires: gettext
+BuildRoot: %{_tmppath}/%{name}-root
 
 %description
-Popt is a C library for parsing command line parameters.  Popt
-was heavily influenced by the getopt() and getopt_long() functions,
-but it improves on them by allowing more powerful argument expansion.
-Popt can parse arbitrary argv[] style arrays and automatically set
-variables based on command line arguments.  Popt allows command
-line arguments to be aliased via configuration files and includes
-utility functions for parsing arbitrary strings into argv[] arrays
-using shell-like rules.
-
-Install popt if you're a C programmer and you'd like to use its
-capabilities.
+Popt is a C library for parsing command line parameters. Popt was
+heavily influenced by the getopt() and getopt_long() functions, but it
+improves on them by allowing more powerful argument expansion. Popt
+can parse arbitrary argv[] style arrays and automatically set
+variables based on command line arguments. Popt allows command line
+arguments to be aliased via configuration files and includes utility
+functions for parsing arbitrary strings into argv[] arrays using
+shell-like rules.
 
 %prep
 %setup -q
 
 %build
-#CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=/usr
-
 %configure
 make
 
 %install
+rm -rf $RPM_BUILD_ROOT
 make DESTDIR=$RPM_BUILD_ROOT install
+%find_lang popt
+
+%track
+prog popt = {
+    version   = %{version}
+    url       = http://rpm5.org/%{name}
+    regex     = %{name}-(\d+\.\d+\.\d+)\.tar\.gz
+}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -f popt.lang
 %defattr(-,root,root)
-%{_prefix}/lib/libpopt.*
-%{_prefix}/include/popt.h
-%{_prefix}/man/man3/popt.3
-%{_prefix}/share/locale/*/LC_MESSAGES/popt.mo
+%{_libdir}/libpopt.*
+%{_includedir}/popt.h
+%{_mandir}/man3/popt.3*
 
 %changelog
+* Tue Dec 11 2007 Jeff Johnson <jbj@rpm5.org>
+- release popt-1.13 through rpm5.org.
+
+* Tue Jul 10 2007 Jeff Johnson <jbj@rpm5.org>
+- release popt-1.12 through rpm5.org.
+
+* Sat Jun  9 2007 Jeff Johnson <jbj@rpm5.org>
+- release popt-1.11 through rpm5.org.
+
 * Thu Dec 10 1998 Michael Johnson <johnsonm@redhat.com>
 - released 1.2.2; see CHANGES
 
