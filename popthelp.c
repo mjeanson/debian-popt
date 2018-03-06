@@ -152,7 +152,7 @@ static inline size_t stringDisplayWidth(const char *s)
 }
 
 /**
- * @param table		option(s)
+ * @param opt		option(s)
  */
 /*@observer@*/ /*@null@*/ static const char *
 getTableTranslationDomain(/*@null@*/ const struct poptOption *opt)
@@ -322,6 +322,7 @@ static void singleOptionHelp(FILE * fp, columns_t columns,
 
     /* Make sure there's more than enough room in target buffer. */
     if (opt->longName)	nb += strlen(opt->longName);
+    if (F_ISSET(opt, TOGGLE)) nb += sizeof("[no]") - 1;
     if (argDescrip)	nb += strlen(argDescrip);
 
     left = malloc(nb);
@@ -345,7 +346,18 @@ static void singleOptionHelp(FILE * fp, columns_t columns,
 	/* XXX --long always padded for alignment with/without "-X, ". */
 	char *dash = poptArgType(opt) == POPT_ARG_MAINCALL ? ""
 		   : (F_ISSET(opt, ONEDASH) ? "-" : "--");
-	(void) stpcpy(stpcpy(stpcpy(left, "    "), dash), opt->longName);
+	const char *longName = opt->longName;
+	const char *toggle;
+	if (F_ISSET(opt, TOGGLE)) {
+	    toggle = "[no]";
+	    if (longName[0] == 'n' && longName[1] == 'o') {
+		longName += sizeof("no") - 1;
+		if (longName[0] == '-')
+		    longName++;
+	    }
+	} else
+	    toggle = "";
+	(void) stpcpy(stpcpy(stpcpy(stpcpy(left, "    "), dash), toggle), longName);
     }
 #undef	prtlong
 
@@ -368,8 +380,8 @@ static void singleOptionHelp(FILE * fp, columns_t columns,
 		    *te++ = ' ';
 		    strcpy(te, defs);
 		    defs = _free(defs);
+		    defs = t;
 		}
-		defs = t;
 	    }
 	}
 
@@ -547,7 +559,7 @@ static size_t maxArgWidth(const struct poptOption * opt,
  * @param fp		output file handle
  * @param items		alias/exec array
  * @param nitems	no. of alias/exec entries
- * @param left		largest argument display width
+ * @param columns	output display width control
  * @param translation_domain	translation domain
  */
 static void itemHelp(FILE * fp,
@@ -627,14 +639,12 @@ static size_t showHelpIntro(poptContext con, FILE * fp)
 	/*@modifies fp, fileSystem @*/
 {
     size_t len = (size_t)6;
-    const char * fn;
     int xx;
 
     xx = POPT_fprintf(fp, POPT_("Usage:"));
     if (!(con->flags & POPT_CONTEXT_KEEP_FIRST)) {
-/*@-type@*/	/* LCL: wazzup? */
-	fn = con->optionStack->argv[0];
-/*@=type@*/
+	struct optionStackEntry * os = con->optionStack;
+	const char * fn = (os->argv ? os->argv[0] : NULL);
 	if (fn == NULL) return len;
 	if (strchr(fn, '/')) fn = strrchr(fn, '/') + 1;
 	/* XXX POPT_fprintf not needed for argv[0] display. */

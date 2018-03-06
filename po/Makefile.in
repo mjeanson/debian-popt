@@ -12,7 +12,7 @@
 GETTEXT_MACRO_VERSION = 0.17
 
 PACKAGE = popt
-VERSION = 1.14
+VERSION = 1.15
 PACKAGE_BUGREPORT = popt-devel@rpm5.org
 
 SHELL = /bin/sh
@@ -22,42 +22,42 @@ srcdir = .
 top_srcdir = ..
 
 
-prefix = /usr
+prefix = /usr/local
 exec_prefix = ${prefix}
 datarootdir = ${prefix}/share
 datadir = ${datarootdir}
 localedir = ${datarootdir}/locale
 gettextsrcdir = $(datadir)/gettext/po
 
-INSTALL = /usr/bin/install -c
+INSTALL = /usr/opkg/bin/ginstall -c
 INSTALL_DATA = ${INSTALL} -m 644
 
 # We use $(mkdir_p).
 # In automake <= 1.9.x, $(mkdir_p) is defined either as "mkdir -p --" or as
 # "$(mkinstalldirs)" or as "$(install_sh) -d". For these automake versions,
-# $(SHELL) /X/src/popt/install-sh does not start with $(SHELL), so we add it.
-# In automake >= 1.10, /bin/mkdir -p is derived from ${MKDIR_P}, which is defined
+# $(SHELL) /d2/u/rse/prj/rpm/src.popt/install-sh does not start with $(SHELL), so we add it.
+# In automake >= 1.10, /usr/opkg/bin/gmkdir -p is derived from ${MKDIR_P}, which is defined
 # either as "/path/to/mkdir -p" or ".../install-sh -c -d". For these automake
 # versions, $(mkinstalldirs) and $(install_sh) are unused.
-mkinstalldirs = $(SHELL) $(SHELL) /X/src/popt/install-sh -d
-install_sh = $(SHELL) $(SHELL) /X/src/popt/install-sh
-MKDIR_P = /bin/mkdir -p
-mkdir_p = /bin/mkdir -p
+mkinstalldirs = $(SHELL) $(SHELL) /d2/u/rse/prj/rpm/src.popt/install-sh -d
+install_sh = $(SHELL) $(SHELL) /d2/u/rse/prj/rpm/src.popt/install-sh
+MKDIR_P = /usr/opkg/bin/gmkdir -p
+mkdir_p = /usr/opkg/bin/gmkdir -p
 
-GMSGFMT_ = /usr/bin/msgfmt
-GMSGFMT_no = /usr/bin/msgfmt
-GMSGFMT_yes = /usr/bin/msgfmt
+GMSGFMT_ = /usr/opkg/bin/msgfmt
+GMSGFMT_no = /usr/opkg/bin/msgfmt
+GMSGFMT_yes = /usr/opkg/bin/msgfmt
 GMSGFMT = $(GMSGFMT_$(USE_MSGCTXT))
-MSGFMT_ = /usr/bin/msgfmt
-MSGFMT_no = /usr/bin/msgfmt
-MSGFMT_yes = /usr/bin/msgfmt
+MSGFMT_ = /usr/opkg/bin/msgfmt
+MSGFMT_no = /usr/opkg/bin/msgfmt
+MSGFMT_yes = /usr/opkg/bin/msgfmt
 MSGFMT = $(MSGFMT_$(USE_MSGCTXT))
-XGETTEXT_ = /usr/bin/xgettext
-XGETTEXT_no = /usr/bin/xgettext
-XGETTEXT_yes = /usr/bin/xgettext
+XGETTEXT_ = /usr/opkg/bin/xgettext
+XGETTEXT_no = /usr/opkg/bin/xgettext
+XGETTEXT_yes = /usr/opkg/bin/xgettext
 XGETTEXT = $(XGETTEXT_$(USE_MSGCTXT))
 MSGMERGE = msgmerge
-MSGMERGE_UPDATE = /usr/bin/msgmerge --update
+MSGMERGE_UPDATE = /usr/opkg/bin/msgmerge --update
 MSGINIT = msginit
 MSGCONV = msgconv
 MSGFILTER = msgfilter
@@ -162,7 +162,7 @@ $(DOMAIN).pot-update: $(POTFILES) $(srcdir)/POTFILES.in remove-potcdate.sed
 	      --files-from=$(srcdir)/POTFILES.in \
 	      --copyright-holder='$(COPYRIGHT_HOLDER)' \
 	      --package-name="$${package_gnu}popt" \
-	      --package-version='1.14' \
+	      --package-version='1.15' \
 	      --msgid-bugs-address="$$msgid_bugs_address" \
 	    ;; \
 	esac
