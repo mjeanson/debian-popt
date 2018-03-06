@@ -7,7 +7,7 @@
 # Please note that the actual code is *not* freely available.
 
 PACKAGE = popt
-VERSION = 1.7
+VERSION = 1.10.1
 
 # These two variables depend on the location of this directory.
 subdir = po
@@ -28,8 +28,8 @@ gettextsrcdir = $(datadir)/gettext/po
 
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
-MKINSTALLDIRS = ./mkinstalldirs
-mkinstalldirs = $(SHELL) `case "$(MKINSTALLDIRS)" in /*) echo "$(MKINSTALLDIRS)" ;; *) echo "$(top_builddir)/$(MKINSTALLDIRS)" ;; esac`
+MKINSTALLDIRS = $(top_builddir)/./mkinstalldirs
+mkinstalldirs = $(SHELL) `case "$(MKINSTALLDIRS)" in /*) echo "$(MKINSTALLDIRS)" ;; *) echo "$(top_builddir)/mkinstalldirs" ;; esac`
 
 CC = gcc
 GMSGFMT = /usr/bin/msgfmt
@@ -38,7 +38,7 @@ XGETTEXT = /usr/bin/xgettext
 MSGMERGE = msgmerge
 
 DEFS = -DHAVE_CONFIG_H
-CFLAGS = -Wall -g -O2 -D_GNU_SOURCE -D_REENTRANT -Wall -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wno-char-subscripts
+CFLAGS = -Wall -g -O2 -fPIC -DPIC -D_GNU_SOURCE -D_REENTRANT -Wall -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wno-char-subscripts
 CPPFLAGS = 
 
 INCLUDES = -I.. -I$(top_srcdir)/intl

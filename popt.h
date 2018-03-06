@@ -112,23 +112,29 @@
 /** \ingroup popt
  */
 struct poptOption {
-/*@observer@*/ /*@null@*/ const char * longName; /*!< may be NULL */
-    char shortName;			/*!< may be '\0' */
+/*@observer@*/ /*@null@*/
+    const char * longName;	/*!< may be NULL */
+    char shortName;		/*!< may be NUL */
     int argInfo;
-/*@shared@*/ /*@null@*/ void * arg;	/*!< depends on argInfo */
+/*@shared@*/ /*@null@*/
+    void * arg;			/*!< depends on argInfo */
     int val;			/*!< 0 means don't return, just update flag */
-/*@observer@*/ /*@null@*/ const char * descrip;	/*!< description for autohelp -- may be NULL */
-/*@observer@*/ /*@null@*/ const char * argDescrip; /*!< argument description for autohelp */
+/*@observer@*/ /*@null@*/
+    const char * descrip;	/*!< description for autohelp -- may be NULL */
+/*@observer@*/ /*@null@*/
+    const char * argDescrip;	/*!< argument description for autohelp */
 };
 
 /** \ingroup popt
  * A popt alias argument for poptAddAlias().
  */
 struct poptAlias {
-/*@owned@*/ /*@null@*/ const char * longName;	/*!< may be NULL */
-    char shortName;		/*!< may be '\0' */
+/*@owned@*/ /*@null@*/
+    const char * longName;	/*!< may be NULL */
+    char shortName;		/*!< may be NUL */
     int argc;
-/*@owned@*/ const char ** argv;	/*!< must be free()able */
+/*@owned@*/
+    const char ** argv;		/*!< must be free()able */
 };
 
 /** \ingroup popt
@@ -138,7 +144,8 @@ struct poptAlias {
 typedef struct poptItem_s {
     struct poptOption option;	/*!< alias/exec name(s) and description. */
     int argc;			/*!< (alias) no. of args. */
-/*@owned@*/ const char ** argv;	/*!< (alias) args, must be free()able. */
+/*@owned@*/
+    const char ** argv;		/*!< (alias) args, must be free()able. */
 } * poptItem;
 /*@=exporttype@*/
 
@@ -164,6 +171,12 @@ extern struct poptOption poptAliasOptions[];
 /*@unchecked@*/ /*@observer@*/
 extern struct poptOption poptHelpOptions[];
 /*@=exportvar@*/
+
+/*@-exportvar@*/
+/*@unchecked@*/ /*@observer@*/
+extern struct poptOption * poptHelpOptionsI18N;
+/*@=exportvar@*/
+
 #define POPT_AUTOHELP { NULL, '\0', POPT_ARG_INCLUDE_TABLE, poptHelpOptions, \
 			0, "Help options:", NULL },
 
@@ -210,18 +223,20 @@ typedef void (*poptCallbackType) (poptContext con,
 		/*@null@*/ const struct poptOption * opt,
 		/*@null@*/ const char * arg,
 		/*@null@*/ const void * data)
-	/*@*/;
+	/*@globals internalState @*/
+	/*@modifies internalState @*/;
 
 /** \ingroup popt
  * Initialize popt context.
- * @param name
+ * @param name		context name (usually argv[0] program name)
  * @param argc		no. of arguments
  * @param argv		argument array
  * @param options	address of popt option table
  * @param flags		or'd POPT_CONTEXT_* bits
  * @return		initialized popt context
  */
-/*@only@*/ /*@null@*/ poptContext poptGetContext(
+/*@only@*/ /*@null@*/
+poptContext poptGetContext(
 		/*@dependent@*/ /*@keep@*/ const char * name,
 		int argc, /*@dependent@*/ /*@keep@*/ const char ** argv,
 		/*@dependent@*/ /*@keep@*/ const struct poptOption * options,
@@ -232,10 +247,9 @@ typedef void (*poptCallbackType) (poptContext con,
  * Reinitialize popt context.
  * @param con		context
  */
-/*@-exportlocal@*/
+/*@unused@*/
 void poptResetContext(/*@null@*/poptContext con)
 	/*@modifies con @*/;
-/*@=exportlocal@*/
 
 /** \ingroup popt
  * Return value of next option found.
@@ -246,37 +260,40 @@ int poptGetNextOpt(/*@null@*/poptContext con)
 	/*@globals fileSystem, internalState @*/
 	/*@modifies con, fileSystem, internalState @*/;
 
-/*@-redecl@*/
 /** \ingroup popt
  * Return next option argument (if any).
  * @param con		context
- * @return		option argument, NULL if no more options are available
+ * @return		option argument, NULL if no argument is available
  */
-/*@observer@*/ /*@null@*/ const char * poptGetOptArg(/*@null@*/poptContext con)
+/*@observer@*/ /*@null@*/ /*@unused@*/
+const char * poptGetOptArg(/*@null@*/poptContext con)
 	/*@modifies con @*/;
 
 /** \ingroup popt
- * Return current option's argument.
+ * Return next argument.
  * @param con		context
- * @return		option argument, NULL if no more options are available
+ * @return		next argument, NULL if no argument is available
  */
-/*@observer@*/ /*@null@*/ const char * poptGetArg(/*@null@*/poptContext con)
+/*@observer@*/ /*@null@*/ /*@unused@*/
+const char * poptGetArg(/*@null@*/poptContext con)
 	/*@modifies con @*/;
 
 /** \ingroup popt
- * Peek at current option's argument.
+ * Peek at current argument.
  * @param con		context
- * @return		option argument
+ * @return		current argument, NULL if no argument is available
  */
-/*@observer@*/ /*@null@*/ const char * poptPeekArg(/*@null@*/poptContext con)
+/*@observer@*/ /*@null@*/ /*@unused@*/
+const char * poptPeekArg(/*@null@*/poptContext con)
 	/*@*/;
 
 /** \ingroup popt
  * Return remaining arguments.
  * @param con		context
- * @return		argument array, terminated with NULL
+ * @return		argument array, NULL terminated
  */
-/*@observer@*/ /*@null@*/ const char ** poptGetArgs(/*@null@*/poptContext con)
+/*@observer@*/ /*@null@*/
+const char ** poptGetArgs(/*@null@*/poptContext con)
 	/*@modifies con @*/;
 
 /** \ingroup popt
@@ -285,16 +302,17 @@ int poptGetNextOpt(/*@null@*/poptContext con)
  * @param flags
  * @return		offending option
  */
-/*@observer@*/ const char * poptBadOption(/*@null@*/poptContext con, int flags)
+/*@observer@*/
+const char * poptBadOption(/*@null@*/poptContext con, int flags)
 	/*@*/;
-/*@=redecl@*/
 
 /** \ingroup popt
  * Destroy context.
  * @param con		context
  * @return		NULL always
  */
-/*@null@*/ poptContext poptFreeContext( /*@only@*/ /*@null@*/ poptContext con)
+/*@null@*/
+poptContext poptFreeContext( /*@only@*/ /*@null@*/ poptContext con)
 	/*@modifies con @*/;
 
 /** \ingroup popt
@@ -303,6 +321,7 @@ int poptGetNextOpt(/*@null@*/poptContext con)
  * @param argv		argument array, NULL terminated
  * @return		0 on success, POPT_ERROR_OPTSTOODEEP on failure
  */
+/*@unused@*/
 int poptStuffArgs(poptContext con, /*@keep@*/ const char ** argv)
 	/*@modifies con @*/;
 
@@ -336,9 +355,9 @@ int poptAddItem(poptContext con, poptItem newItem, int flags)
  * @return		0 on success, POPT_ERROR_ERRNO on failure
  */
 int poptReadConfigFile(poptContext con, const char * fn)
-	/*@globals fileSystem, internalState @*/
+	/*@globals errno, fileSystem, internalState @*/
 	/*@modifies con->execs, con->numExecs,
-		fileSystem, internalState @*/;
+		errno, fileSystem, internalState @*/;
 
 /** \ingroup popt
  * Read default configuration from /etc/popt and $HOME/.popt.
@@ -346,6 +365,7 @@ int poptReadConfigFile(poptContext con, const char * fn)
  * @param useEnv	(unused)
  * @return		0 on success, POPT_ERROR_ERRNO on failure
  */
+/*@unused@*/
 int poptReadDefaultConfig(poptContext con, /*@unused@*/ int useEnv)
 	/*@globals fileSystem, internalState @*/
 	/*@modifies con->execs, con->numExecs,
@@ -439,10 +459,9 @@ int poptConfigFileToString(FILE *fp, /*@out@*/ char ** argstrp, int flags)
  * @param error		popt error
  * @return		error string
  */
-/*@-redecl@*/
-/*@observer@*/ const char *const poptStrerror(const int error)
+/*@observer@*/
+const char *const poptStrerror(const int error)
 	/*@*/;
-/*@=redecl@*/
 
 /** \ingroup popt
  * Limit search for executables.
@@ -450,6 +469,7 @@ int poptConfigFileToString(FILE *fp, /*@out@*/ char ** argstrp, int flags)
  * @param path		single path to search for executables
  * @param allowAbsolute	absolute paths only?
  */
+/*@unused@*/
 void poptSetExecPath(poptContext con, const char * path, int allowAbsolute)
 	/*@modifies con @*/;
 
@@ -488,10 +508,11 @@ void poptSetOtherOptionHelp(poptContext con, const char * text)
  * @param con		context
  * @return		argv[0]
  */
-/*@-redecl -fcnuse@*/
-/*@observer@*/ const char * poptGetInvocationName(poptContext con)
+/*@-fcnuse@*/
+/*@observer@*/
+const char * poptGetInvocationName(poptContext con)
 	/*@*/;
-/*@=redecl =fcnuse@*/
+/*@=fcnuse@*/
 
 /** \ingroup popt
  * Shuffle argv pointers to remove stripped args, returns new argc.
@@ -514,6 +535,7 @@ int poptStrippedArgv(poptContext con, int argc, char ** argv)
  * @return		0 on success, POPT_ERROR_NULLARG/POPT_ERROR_BADOPERATION
  */
 /*@-incondefs@*/
+/*@unused@*/
 int poptSaveLong(/*@null@*/ long * arg, int argInfo, long aLong)
 	/*@modifies *arg @*/
 	/*@requires maxSet(arg) >= 0 /\ maxRead(arg) == 0 @*/;
@@ -528,6 +550,7 @@ int poptSaveLong(/*@null@*/ long * arg, int argInfo, long aLong)
  * @return		0 on success, POPT_ERROR_NULLARG/POPT_ERROR_BADOPERATION
  */
 /*@-incondefs@*/
+/*@unused@*/
 int poptSaveInt(/*@null@*/ int * arg, int argInfo, long aLong)
 	/*@modifies *arg @*/
 	/*@requires maxSet(arg) >= 0 /\ maxRead(arg) == 0 @*/;
