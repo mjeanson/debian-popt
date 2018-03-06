@@ -1,11 +1,16 @@
 #include <errno.h>
 #include <ctype.h>
 #include <fcntl.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
 #include <unistd.h>
+
+#if HAVE_ALLOCA_H
+# include <alloca.h>
+#endif
 
 #include "popt.h"
 
@@ -23,15 +28,28 @@ struct poptContext_s {
     char ** leftovers;
     int numLeftovers;
     int nextLeftover;
-    struct poptOption * options;
+    const struct poptOption * options;
     int restLeftover;
     char * appName;
     struct poptAlias * aliases;
     int numAliases;
+    int flags;
 };
 
+#ifndef HAVE_STRERROR
+static char * strerror(int errno) {
+    extern int sys_nerr;
+    extern char * sys_errlist[];
+
+    if ((0 <= errno) && (errno < sys_nerr))
+	return sys_errlist[errno];
+    else
+	return "unknown errno";
+}
+#endif
+
 poptContext poptGetContext(char * name ,int argc, char ** argv, 
-			   struct poptOption * options, int flags) {
+			   const struct poptOption * options, int flags) {
     poptContext con = malloc(sizeof(*con));
 
     con->os = con->optionStack;
@@ -40,7 +58,11 @@ poptContext poptGetContext(char * name ,int argc, char ** argv,
     con->os->currAlias = NULL;
     con->os->nextCharArg = NULL;
     con->os->nextArg = NULL;
-    con->os->next = 1;			/* skip argv[0] */
+
+    if (flags & POPT_KEEP_FIRST)
+	con->os->next = 0;			/* include argv[0] */
+    else
+	con->os->next = 1;			/* skip argv[0] */
 
     con->leftovers = malloc(sizeof(char *) * (argc + 1));
     con->numLeftovers = 0;
@@ -49,6 +71,7 @@ poptContext poptGetContext(char * name ,int argc, char ** argv,
     con->options = options;
     con->aliases = NULL;
     con->numAliases = 0;
+    con->flags = 0;
     
     if (!name)
 	con->appName = NULL;
@@ -75,7 +98,9 @@ int poptGetNextOpt(poptContext con) {
     char * optString, * chptr, * localOptString;
     char * longArg = NULL;
     char * origOptString;
-    struct poptOption * opt = NULL;
+    long aLong;
+    char * end;
+    const struct poptOption * opt = NULL;
     int done = 0;
     int i;
 
@@ -214,6 +239,24 @@ int poptGetNextOpt(poptContext con) {
 		  case POPT_ARG_STRING:
 		    *((char **) opt->arg) = con->os->nextArg;
 		    break;
+
+		  case POPT_ARG_INT:
+		  case POPT_ARG_LONG:
+		    aLong = strtol(con->os->nextArg, &end, 0);
+		    if (*end) 
+			return POPT_ERROR_BADNUMBER;
+
+		    if (aLong == LONG_MIN || aLong == LONG_MAX)
+			return POPT_ERROR_OVERFLOW;
+		    if (opt->argInfo == POPT_ARG_LONG) {
+			*((long *) opt->arg) = aLong;
+		    } else {
+			if (aLong > INT_MAX || aLong < INT_MIN)
+			    return POPT_ERROR_OVERFLOW;
+			*((int *) opt->arg) =aLong;
+		    }
+		    break;
+
 		  default:
 		    printf("option type not implemented in popt\n");
 		    exit(1);
@@ -350,7 +393,8 @@ int poptParseArgvString(char * s, int * argcPtr, char *** argvPtr) {
 	argc++, buf++;
     }
 
-    argv2 = (void * )dst = malloc(argc * sizeof(*argv) + (buf - bufStart));
+    dst = malloc(argc * sizeof(*argv) + (buf - bufStart));
+    argv2 = (void *) dst;
     dst += argc * sizeof(*argv);
     memcpy(argv2, argv, argc * sizeof(*argv));
     memcpy(dst, bufStart, buf - bufStart);
@@ -475,6 +519,8 @@ int poptReadDefaultConfig(poptContext con, int useEnv) {
 
     rc = poptReadConfigFile(con, "/etc/popt");
     if (rc) return rc;
+    if (getuid() != geteuid()) return 0;
+
     if ((home = getenv("HOME"))) {
 	fn = alloca(strlen(home) + 20);
 	sprintf(fn, "%s/.popt", home);
@@ -561,6 +607,10 @@ const char * poptStrerror(const int error) {
 	return "aliases nested too deeply";
       case POPT_ERROR_BADQUOTE:
 	return "error in paramter quoting";
+      case POPT_ERROR_BADNUMBER:
+	return "invalid numeric value";
+      case POPT_ERROR_OVERFLOW:
+	return "number too large or too small";
       case POPT_ERROR_ERRNO:
 	return strerror(errno);
       default:
