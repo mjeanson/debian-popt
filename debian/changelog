@@ -1,3 +1,15 @@
+popt (1.16-11) unstable; urgency=medium
+
+  * [d9d0d45] Set myself as maintainer
+  * [a9b4695] Modernize packaging
+     + Convert to a full debhelper rules file
+     + Multiple autoreconf fixes
+     + Fix test suite
+     + Add comments to all patches
+     + Add Fedora patches (Closes: #260275)
+
+ -- Michael Jeanson <mjeanson@debian.org>  Tue, 27 Mar 2018 12:05:03 -0400
+
 popt (1.16-10) unstable; urgency=low
 
   * debian/rules: move dependency on target autoreconf-stamp from
