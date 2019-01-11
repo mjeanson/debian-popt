@@ -8,8 +8,5 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 %:
 	dh $@ --with autoreconf
 
-override_dh_auto_build:
-	dh_auto_build -- V=1
-
 override_dh_makeshlibs:
 	dh_makeshlibs -V --add-udeb=libpopt0-udeb
