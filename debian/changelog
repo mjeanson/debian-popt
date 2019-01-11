@@ -1,3 +1,19 @@
+popt (1.16-12) unstable; urgency=medium
+
+  [ Helmut Grohne ]
+  * [0bdae67] Annotate Build-Depends: api-sanity-checker with <!nocheck>.
+    (Closes: #894824)
+
+  [ Michael Jeanson ]
+  * [f3d5d95] Remove redundant override for silent rules
+  * [1301752] Add 'Rules-Requires-Root: no' to control
+  * [6fd0194] Use salsa canonical uri in VCS-Browser
+  * [7fb401b] Bump debhelper compat to 11
+  * [eddc98b] Add Build-Depends-Package to symbols file
+  * [403a5dc] Bump standards version to 4.3.0
+
+ -- Michael Jeanson <mjeanson@debian.org>  Fri, 11 Jan 2019 11:59:20 -0500
+
 popt (1.16-11) unstable; urgency=medium
 
   * [d9d0d45] Set myself as maintainer
