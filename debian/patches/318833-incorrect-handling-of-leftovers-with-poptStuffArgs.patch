@@ -6,6 +6,12 @@ cause memory corruption and possibly memory leaks or a crash.
 Change the allocation of leftOvers so it adapts to the input on the fly
 instead of trying to pre-allocate it in one go.
 
+Memory leak fixed by Christian Göttsche <cgzones@googlemail.com>.
+
+Previously the content of 'con->leftovers' did not hold own memory, so
+it did not need to be freed. Free each elements of the array before
+setting con->numLeftovers to zero.
+
 --- a/popt.c
 +++ b/popt.c
 @@ -184,6 +184,7 @@
@@ -16,7 +22,17 @@ instead of trying to pre-allocate it in one go.
  /*@-dependenttrans -assignexpose@*/	/* FIX: W2DO? */
      con->options = options;
  /*@=dependenttrans =assignexpose@*/
-@@ -1357,8 +1358,21 @@
+@@ -232,6 +233,9 @@
+     con->os->nextArg = NULL;
+     con->os->next = 1;			/* skip argv[0] */
+ 
++    for (i = 0; i < con->numLeftovers; i++) {
++        con->leftovers[i] = _free(con->leftovers[i]);
++    }
+     con->numLeftovers = 0;
+     con->nextLeftover = 0;
+     con->restLeftover = 0;
+@@ -1357,8 +1361,21 @@
  		    con->os->nextArg = xstrdup(origOptString);
  		    return 0;
  		}
@@ -40,7 +56,7 @@ instead of trying to pre-allocate it in one go.
  		continue;
  	    }
  
-@@ -1612,6 +1626,8 @@
+@@ -1612,6 +1629,8 @@
  
  poptContext poptFreeContext(poptContext con)
  {
@@ -49,12 +65,12 @@ instead of trying to pre-allocate it in one go.
      if (con == NULL) return con;
      poptResetContext(con);
      con->os->argb = _free(con->os->argb);
-@@ -1622,7 +1638,11 @@
+@@ -1622,7 +1641,11 @@
      con->execs = poptFreeItems(con->execs, con->numExecs);
      con->numExecs = 0;
  
 +    for (i = 0; i < con->numLeftovers; i++) {
-+	con->leftovers[i] = _free(&con->leftovers[i]);
++	con->leftovers[i] = _free(con->leftovers[i]);
 +    }
      con->leftovers = _free(con->leftovers);
 +
