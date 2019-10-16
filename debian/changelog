@@ -1,3 +1,14 @@
+popt (1.16-13) unstable; urgency=medium
+
+  * [f02a155] Add Salsa CI configuration
+  * [5097b39] Fix memory leak in leftovers patche (Closes: #941814)
+  * [000719b] Bump standards version to 4.4.1
+  * [6b87de3] Set minimum gettext version to 0.19.8 (Closes: #941778)
+  * [e0d2fe3] Remove ancient conflicts from 2000
+  * [4edac2c] Add examples to libpopt-dev (Closes: #254321)
+
+ -- Michael Jeanson <mjeanson@debian.org>  Wed, 16 Oct 2019 16:11:41 -0400
+
 popt (1.16-12) unstable; urgency=medium
 
   [ Helmut Grohne ]
