@@ -20,7 +20,7 @@ This patch was proposed to upstream: http://rpm5.org/community/popt-devel/0264.h
      con->finalArgvAlloced = argc * 2;
      con->finalArgv = calloc( (size_t)con->finalArgvAlloced, sizeof(*con->finalArgv) );
      con->execAbsolute = 1;
-@@ -240,6 +241,7 @@
+@@ -237,6 +238,7 @@
      con->nextLeftover = 0;
      con->restLeftover = 0;
      con->doExec = NULL;
@@ -28,7 +28,7 @@ This patch was proposed to upstream: http://rpm5.org/community/popt-devel/0264.h
  
      if (con->finalArgv != NULL)
      for (i = 0; i < con->finalArgvCount; i++) {
-@@ -568,6 +570,7 @@
+@@ -565,6 +567,7 @@
  /*@-nullstate@*/
      rc = execvp(argv[0], (char *const *)argv);
  /*@=nullstate@*/
@@ -36,7 +36,7 @@ This patch was proposed to upstream: http://rpm5.org/community/popt-devel/0264.h
  
  exit:
      if (argv) {
-@@ -1730,11 +1733,19 @@
+@@ -1727,11 +1730,19 @@
  const char * poptBadOption(poptContext con, unsigned int flags)
  {
      struct optionStackEntry * os = NULL;
