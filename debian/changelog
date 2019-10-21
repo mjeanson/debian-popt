@@ -1,3 +1,9 @@
+popt (1.16-14) unstable; urgency=medium
+
+  * [6cadc21] Revert memory leak fix that causes regression, more testing required
+
+ -- Michael Jeanson <mjeanson@debian.org>  Mon, 21 Oct 2019 11:00:01 -0400
+
 popt (1.16-13) unstable; urgency=medium
 
   * [f02a155] Add Salsa CI configuration
