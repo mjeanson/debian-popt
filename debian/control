@@ -8,7 +8,7 @@ Standards-Version: 4.4.1
 Rules-Requires-Root: no
 Vcs-Git: https://salsa.debian.org/debian/popt.git
 Vcs-Browser: https://salsa.debian.org/debian/popt
-Homepage: http://rpm5.org/
+Homepage: https://github.com/rpm-software-management/popt
 
 Package: libpopt0
 Architecture: any
