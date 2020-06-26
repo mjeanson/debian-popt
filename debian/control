@@ -2,7 +2,7 @@ Source: popt
 Section: devel
 Priority: optional
 Maintainer: Michael Jeanson <mjeanson@debian.org>
-Build-Depends: debhelper (>= 11~), gettext (>= 0.18.1.1-8),
+Build-Depends: debhelper (>= 11~), gettext (>= 0.19.8),
  api-sanity-checker <!nocheck>
 Standards-Version: 4.4.1
 Rules-Requires-Root: no
