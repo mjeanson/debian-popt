@@ -1,3 +1,17 @@
+popt (1.18-1) unstable; urgency=medium
+
+  * [6244dc9] A new upstream emerges (Closes: #933635)
+  * [26d03e9] New upstream version 1.18
+  * [115f26b] Refresh patches for 1.18
+  * [fd768b0] Set gettext builddep to >= 0.19.8
+  * [b25c3bd] Drop builddep on api-sanity-checker
+  * [b20ebd7] Examples moved to tests/
+  * [76428e7] Move to debhelper 12
+  * [f32d74b] Bump standards version to 4.5.0
+  * [39d200c] Use dh_installman
+
+ -- Michael Jeanson <mjeanson@debian.org>  Fri, 26 Jun 2020 12:12:05 -0400
+
 popt (1.16-14) unstable; urgency=medium
 
   * [6cadc21] Revert memory leak fix that causes regression, more testing required
