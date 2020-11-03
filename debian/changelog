@@ -1,3 +1,16 @@
+popt (1.18-2) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * [ad90dc7] Add upstream metadata file
+  * [7400917] Drop unnecessary dependency on dh-autoreconf.
+  * [62b862e] Fix day-of-week for changelog entries 1.0-3, 1.0-2.
+
+  [ Christian Göttsche ]
+  * [d38af36] Use modern salsa-ci configuration
+  * [4673e05] Add simple autopkgtest check
+
+ -- Michael Jeanson <mjeanson@debian.org>  Tue, 03 Nov 2020 11:05:47 -0500
+
 popt (1.18-1) unstable; urgency=medium
 
   * [6244dc9] A new upstream emerges (Closes: #933635)
