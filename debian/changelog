@@ -1,3 +1,11 @@
+popt (1.18-3) unstable; urgency=medium
+
+  * [79431a2] fix autoconf 2.70 obsolete macros (Closes: #978885)
+  * [33be34b] Bump watch file version to 4
+  * [6ef4a4a] Move to debhelper 13
+
+ -- Michael Jeanson <mjeanson@debian.org>  Tue, 24 Aug 2021 15:12:20 -0400
+
 popt (1.18-2) unstable; urgency=medium
 
   [ Debian Janitor ]
